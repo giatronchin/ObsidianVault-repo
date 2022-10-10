@@ -1,0 +1,133 @@
+{
+  "main": {
+    "id": "d0b0dbad5299debf",
+    "type": "split",
+    "children": [
+      {
+        "id": "b60d07b89b83b0b8",
+        "type": "leaf",
+        "state": {
+          "type": "graph",
+          "state": {}
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ff522336b28afd6d",
+    "type": "split",
+    "children": [
+      {
+        "id": "c398dd0a7640a150",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8622720275a739d9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "8c50131f1147ed80",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#john-the-ripper",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "fdbafdc3a56dc261",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b1b1533c054bc5e4",
+    "type": "split",
+    "children": [
+      {
+        "id": "dabe283c39193829",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c4efb321b436bfdb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "9c4b264a6b40b24e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "17988711a7139f33",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "2c0741dc886d5947",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "b60d07b89b83b0b8",
+  "lastOpenFiles": [
+    "Apache Spark.md",
+    "Apache Scala.md",
+    "John The Ripper/Customer Rules.md",
+    "Hadoop.md",
+    "README.md",
+    "John The Ripper/John The Ripper.md",
+    "5.md"
+  ]
+}

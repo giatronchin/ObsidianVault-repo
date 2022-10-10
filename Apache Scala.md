@@ -1,78 +1,89 @@
-/*Scala è basato su Java, e proprio come Java è 'statically typed' ma i programmatori devono fornire le informazioni riguardanti il tipo solo in poche occasioni perché Scala può dedurre
-successivamente le informazioni riguardanti il tipo*/
+# Scala
+#scala #bigdata
+Scala è basato su Java, e proprio come Java è 'statically typed' ma i programmatori devono fornire le informazioni riguardanti il tipo solo in poche occasioni perché Scala può dedurre
+successivamente le informazioni riguardanti il tipo
 
-//E' un linguaggio interpretato e compilato proprio come Java ma possiede si a caratteristiche dei linguaggi dinamici, sia dei linguaggi statici
+E' un linguaggio interpretato e compilato proprio come Java ma possiede si a caratteristiche dei linguaggi dinamici, sia dei linguaggi statici
 
-//Type Inference, deduzione del tipo
-
+Type Inference, deduzione del tipo
+```scala
 val sum = 1 + 2 + 3
 val nums = List(1, 2, 3)   
+```
 
-//Definizione esplicita del tipo
-
+Definizione esplicita del tipo
+```scala
 val sum: Int = 1 + 2 + 3
 val nums: List[Int] = List(1, 2, 3)
 //Map è una collezione iterabile che consiste in coppie di chiavi e valori
 val map: Map[String, List[Int]] 
+```
 
-
-//definizione di un'applicazione in Scala
-
+Definizione di un'applicazione in Scala
+```scala
 def main(args: Array[String])
 
 //al contrario del vecchio classico 
 
 public static void main(String[]args)
+```
 
-//Eseguire uno script in Scala da linea di comando
-
+Eseguire uno script in Scala da linea di comando
+```bash
 scala nomeFile.scala
+```
 
-//Eseguire un'applicazione da linea di comando
-
+Eseguire un'applicazione da linea di comando
+```bash
 scalac nomeApplicazione.scala
+```
 
-//4 tipi differenti di 'identificatori'
+4 tipi differenti di 'identificatori'
 
--alfanumerico (myVar, myMethod, myClass)
--operatori (+, =>, :::) se gli operatori finiscono con : sono associativi a destra
--identificatori_misti (unary_+, myVar_=)
--literali ('class')
+- alfanumerico (myVar, myMethod, myClass)
+- operatori (+, =>, :::) se gli operatori finiscono con : sono associativi a destra
+- identificatori_misti (unary_+, myVar_=)
+- literali ('class')
 
-/*var & val. VAL rappresenta una costante il cui valore  quindi non cambia. VAR invece identifica una variabile, il cui valore memorizzato può essere modificato.
-Se la variabile viene inizializzata alla sua dichiarazione il tipo della variabile viene dedotto, mentre per dichiararlo esplicitamente si può usare questa espressione*/
-
+var & val. VAL rappresenta una costante il cui valore  quindi non cambia. VAR invece identifica una variabile, il cui valore memorizzato può essere modificato.
+Se la variabile viene inizializzata alla sua dichiarazione il tipo della variabile viene dedotto, mentre per dichiararlo esplicitamente si può usare questa espressione
+```scala
 var q : Boolean = true
+```
 
-/*La dichiarazione del tipo per una variabile è obbligatoria quando la variabile è un parametro formale di un METODO (all'interno di un metodo ogni variabile deve essere inizializzata)m.zaccaria@accenture.comm.zaccaria@accenture.com 
-La dichiarazione è altresì obbligatoria quando è definita all'interno di una CLASSE. In quest'ultimo caso non è obbligatorio inizializzare la variabile*/
+La dichiarazione del tipo per una variabile è obbligatoria quando la variabile è un parametro formale di un METODO (all'interno di un metodo ogni variabile deve essere inizializzata)m.zaccaria@accenture.comm.zaccaria@accenture.com 
+La dichiarazione è altresì obbligatoria quando è definita all'interno di una CLASSE. In quest'ultimo caso non è obbligatorio inizializzare la variabile
 
-/*Quando il valore iniziale non viene dichiarato bisogna usare il costruttore 'new' nella dichiarazione della variabile. In questo modo i valori di deafult (0, false, null) vengono 
-impiegati nella costruzione della variabile. Quando il valore iniziale della variabile è dichiarato non è permesso utilizzare la key-word 'new'*/
+Quando il valore iniziale non viene dichiarato bisogna usare il costruttore 'new' nella dichiarazione della variabile. In questo modo i valori di deafult (0, false, null) vengono 
+impiegati nella costruzione della variabile. Quando il valore iniziale della variabile è dichiarato non è permesso utilizzare la key-word 'new'
 
-/*La dichiarazione dei tipi dei parametri viene chiusa tra parentesi quadre*/
- 
+La dichiarazione dei tipi dei parametri viene chiusa tra parentesi quadre
+
+```scala 
  val ary = new Array[Int](5); //Senza inizializzazione, l'array è riempito con zeri
  val ary2 = Array{3,1,4,1,6}; //Con inizializzazione
- 
-/*Tipo di ingresso e di uscita di una funzione è specificato come segue. Nel caso di funzione che prende un solo argomento le parantesi sono sempre necessarie*/
+```
+
+Tipo di ingresso e di uscita di una funzione è specificato come segue. Nel caso di funzione che prende un solo argomento le parantesi sono sempre necessarie:
+```scala
  ...() => return_type; //nessun argomento d'ingresso
  ... arg_type => return_type; //singolo argomento d'ingresso
  ... (arg_type1, arg_type2, arg_type3,...) => return_type; //argomenti d'ingresso multipli
- 
-// SCALA NON HA PRIMITIVE, SOLO OGGETTI
- Any, AnyVal, Boolean, Char, Byte, Short, Int, Long, Float, Double, Unit[ha un solo valore possibile () che è ritornato dalle funzioni che non restituiscono niente],
- AnyRef[corrisponde a Object in Java], ScalaObject, Null, Nothing
- 
-//Unit ha un solo valore possibile: () ed è ciò che viene restituito dalle funzioni che non ritornano niente
-//AnyRef corrisponde ad un oggetto Java
+```
 
-/*Tipi mutabili e non mutabili(comportamento di default). Le collezioni immutabili non posso essere modificate ma possono comunque essere simulate alcune operazioni su di esse 
-ma il risultato ad ogni modo viene inserito all'interno di un nuovo oggetto lasciando quello precedente immutato*/
+ SCALA NON HA PRIMITIVE, SOLO OGGETTI
+ Any, AnyVal, Boolean, Char, Byte, Short, Int, Long, Float, Double, Unit (ha un solo valore possibile () che è ritornato dalle funzioni che non restituiscono niente),
+ AnyRef (corrisponde a Object in Java), ScalaObject, Null, Nothing
  
+Unit ha un solo valore possibile: () ed è ciò che viene restituito dalle funzioni che non ritornano niente. AnyRef corrisponde ad un oggetto Java
+
+Tipi mutabili e non mutabili(comportamento di default). Le collezioni immutabili non posso essere modificate ma possono comunque essere simulate alcune operazioni su di esse 
+ma il risultato ad ogni modo viene inserito all'interno di un nuovo oggetto lasciando quello precedente immutato
+```scala
 import scala.collection.mutable._; //per poter definire collezioni mutabili
+```
 
-//Ogni VALORE in scala è considerato un oggetto, per cui è lecita la seguente dicitura con cui chiamiamo il metodo toString sul valore 1 (essendo questo un oggetto)
+Ogni VALORE in scala è considerato un oggetto, per cui è lecita la seguente dicitura con cui chiamiamo il metodo toString sul valore 1 (essendo questo un oggetto)
 
 1.toString;
 
@@ -95,7 +106,7 @@ import scala.collection.mutable._; //per poter definire collezioni mutabili
 //Decisione a singola precisione
 
 //Operatori oltre a quelli classici possiamo trovare
-
+```scala
 val num = 3;
 num  << 1; //Shift SX di uno
 num >> 3; //Shift DX di tre
@@ -103,13 +114,13 @@ num >>> 1; //Shit DX di tre con zero padding
 true & false; //Bitwise AND
 true | false; //Bitwise OR
 true ^ false; //Bitwise Exclusive OR
+```
 
-/*
-LISTE:
+### LISTE
 Le liste sono IMMUTABILI e PERSISTENTI, cioè gli operatori che ritornano liste non modificano quella originale ma piuttosto ne condividono la struttura.
 Le liste sono OMOGENEE, cioè tutti gli elementi che le compongono sono del medesimo tipo. Quando è necessario specificare il tipo dei valori si può usare la seguente scrittura.
-*/
 
+```scala
 List[Type] (value1, value2, value3);
 
 /*Metodi sulle liste*/
@@ -125,9 +136,10 @@ list.drop(n); //Restituisce una nuova lista meno i primi n elementi della lista 
 list1 :: list2; // Appende due liste
 list.reverse; //Restituisce una lista con gli elementi posizionati in ordine opposto
 list.splitAt(n); //restituisce due tuple (list.take(n), list.drop(n))
+```
 
-/* FUNZIONI DI ORDINE SUPERIORE*/
-
+FUNZIONI DI ORDINE SUPERIORE
+```
 val plusOne = (x:Int) => x + 1;
 val nums = List(1, 2, 3);
 
@@ -135,60 +147,72 @@ val nums = List(1, 2, 3);
 nums.map(plusOne);
 nums.map(x => x + 1);
 nums.map(_ + 1);
+```
 
-/*restituisce una lista in cui la funzione che prendere un solo argomento viene applicata ad ogni elemento di ogni sottolista*/
+restituisce una lista in cui la funzione che prendere un solo argomento viene applicata ad ogni elemento di ogni sottolista
+```scala
 listOfLists.flatMap(function); 
-
+```
 /*Restituisce una lista con gli elementi della lista orginale per cui il predicato è true*/
+```scala
 list.filter(predicate);
-
+```
 /*Come prima ma quando il predicato è falso*/
+```scala
 list.filterNot(predicate);
-
+```
 /*Divide la lista in due tuple, quella con gli elementi per cui il predicato è vero e una con gli elementi per cui il predicato è falso*/
+```scala
 list.partition(predicate);
-
+```
 /*Applica la 'function' passata come argomento per ogni coppia di elementi presenti nella lista, utilizzando i risultati intermedi come nuovo argomento della funzione*/
+```scala
 list.foldLeft(value)(_function_);
 
 numeri = List(4, 1, 2, 3);
 numeri.foldLeft(0)((m,n) => m*2 + n) 
-/* m ed n sono i primi due elementi della lista, calcola il doppio del primo e ne fa la somma. Dalla seconda iterazione, il primo elemento della coppia
-è il risultato intermedio della funzione allo step precedente. Con foldRight la lista è parsata da destra verso sinistra.*/
-
+```
+m ed n sono i primi due elementi della lista, calcola il doppio del primo e ne fa la somma. Dalla seconda iterazione, il primo elemento della coppia
+è il risultato intermedio della funzione allo step precedente. Con foldRight la lista è parsata da destra verso sinistra.
+```scala
 list.find(predicate); //restituisce una lista con gli elementi di list per cui il predicato risulta vero
 
 list.takeWhile(predicate); //scansiona la lista da sinistra verso destra e si ferma quando il predicato non è soddisfato da un elemento della lista. Restituisce la lista con gli elementi trovati
 list.dropWhile(predicate); //simile a quello sopra gli elementi scansionati fino a quel momento sono esclusi dalla lista di ritorno 
-
-/*Tuple: può memorizzare da 2 fino a 22 valore separati da virgole; sono INMUTABILI. Per accedere all'ennesimo valore della tupla si può usare la seguente dicitura*/
+```
+### Tuple
+può memorizzare da 2 fino a 22 valore separati da virgole; sono INMUTABILI. Per accedere all'ennesimo valore della tupla si può usare la seguente dicitura
 t._n; //n è un letterale che rappresenta la posizione dell'elemento
 
-//Set sono immutable di default e per loro esiste una grande varietà di metodi built-in
+Set sono immutable di default e per loro esiste una grande varietà di metodi built-in
 
-/*Mappe per default sono inmutabili, ma possono essere anche definite mutabili tramite scala.collection.mutable. Sono rappresentate come lista di coppie (key, value)*/
+Mappe per default sono inmutabili, ma possono essere anche definite mutabili tramite scala.collection.mutable. Sono rappresentate come lista di coppie (key, value)
+```scala
 Map((key1, value1), ..., (keyN, valueN));
 Map(key1 -> value1,...,keyN -> valueN); //scrittura più veloce
 map.get(key); //restituisce il valore associato con la key
 map.getOrElse(key, deafult); //restituisce il valore associato con la chiave, se la chiave non esiste nella map il valore di default
 map.put(key.value); //per le mappe mutabili, inserisce il valore specificato con la chiave specificata
+```
 
-/*Option sono usate quando un'operazione potrebbe riuscire a ritornare un valore o meno*. Sostanzialmente sono dei tipo
+Option sono usate quando un'operazione potrebbe riuscire a ritornare un valore o meno*. Sostanzialmente sono dei tipo
 parametrizzati. I valori possibili sono Some(value), dove con value indichiamo il tipo corretto o None, nel caso nessun valore dovessere essere
-trovato*/
+trovato
 
-/*Varie strutture di istruzioni condizionali*/
+Varie strutture di istruzioni condizionali
+
+```scala
 if (condition) expression
 if (condition) expression else expression
 if (condition) expression else if (condition) expression
 if (condition) expression else if (condition) expression else expression
+```
+Se nessuna condizione è soddisfatta allora viene restituito il valore Unit
 
-//Se nessuna condizione è soddisfatta allora viene restituito il valore Unit
-
-/*Cicli FOR*/
+#### Cicli FOR
 for(seq) yield expression
 
-/*SEQ è un elenco, separato da ';' di GENERATORI, DEFINIZIONI  e FILTRI.
+SEQ è un elenco, separato da ';' di GENERATORI, DEFINIZIONI  e FILTRI.
 	- generatore ha la forma di sotto, dove list può essere anche una espressione che valutata restituisce una lista
 
 		variabile <- list

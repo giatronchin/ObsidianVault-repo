@@ -15,7 +15,7 @@ Spark SQL fornisce API per semplificare il lavoro su dati strutturati, consenten
 
 Spark's ML libraries fornisce una serie di utility per diversi sviluppi nell'ambito ML come Classificazione, Regressione, Clustering, Filtraggio, Dim. Reduction.
 
-Scritto in linguaggio Scala, compilato ed eseguito su Java Virtual Machine. Spark applica diversi dei principi della programmazione funzionale OSSIA PROGRAMMARE USANDO ESCLUSIVAMENTE FUNZIONI SENZA AVERE EFFETTI COLLATERALI
+Scritto in linguaggio [[Apache Scala]], compilato ed eseguito su Java Virtual Machine. Spark applica diversi dei principi della programmazione funzionale OSSIA PROGRAMMARE USANDO ESCLUSIVAMENTE FUNZIONI SENZA AVERE EFFETTI COLLATERALI
 
 ```scala
 	.map: funzione di ordine superiore che applica una data funzione ad ogni 
