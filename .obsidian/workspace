@@ -130,14 +130,15 @@
   },
   "active": "b60d07b89b83b0b8",
   "lastOpenFiles": [
-    "Docker.md",
     "Linux Administration.md",
+    "README.md",
+    "[Foundations.md",
+    "Git - Fundamentals.md",
+    "Docker.md",
     "Apache Spark.md",
     "Apache Scala.md",
     "John The Ripper/Customer Rules.md",
     "Hadoop.md",
-    "README.md",
-    "John The Ripper/John The Ripper.md",
-    "5.md"
+    "John The Ripper/John The Ripper.md"
   ]
 }
