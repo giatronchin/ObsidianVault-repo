@@ -3,28 +3,28 @@
 
 To initialize a repository within a folder_project:
 ```bash
-	git init
+git init
 ```
 
 Every **editing, creation, deletion or renaming** of file within a repository is seen as a change from the git previous status of the repository. To check what are the last changes since the last commit:
 ```bash
-	git status
+git status
 ```
 
 To **stage** some of these changes or a portion of them we have to use the _add_ command:
 ```bash
-	git add changed_file_path
+git add changed_file_path
 ```
 
 To **commit** the staged changes to the local repository:
 ```bash
-	git commit -m "Commit message"
-	git commit -a -m "Add to stage & commit command"
+git commit -m "Commit message"
+git commit -a -m "Add to stage & commit command"
 ```
 
 To **amend** to the last previous commit issue:
 ```bash
-	git commit --amend -m "New Commit message"
+git commit --amend -m "New Commit message"
 ```
 
 Commit types include:
@@ -47,8 +47,8 @@ To compare 2 different dataset between them:
 Revert will "undo" a previously issued commit.
 This can be done by refering to a SHA specific commit value or referencing ordered commit within a branch:
 ```bash
-	git revert <commit> 
-	git revert main ~2
+git revert <commit> 
+git revert main ~2
 ```
 _Last command revert to the commit that is 2 commit-behind the head commit(last-one) in the main branch_.
 
