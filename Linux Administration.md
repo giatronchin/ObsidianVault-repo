@@ -19,3 +19,26 @@ To remove a repository from apt packege manager:
 sudo add-apt-repository -r <package-repo-name>
 ```
 
+-----------------------------------------------------------------
+
+To generate https **certificate** and **private key**:
+
+```bash
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout private.key -out certificate.crt
+```
+
+-   req: This subcommand enables certificate request and certificate generating utility
+-   -x509: this option outputs a self signed certificate instead of an external certificate request
+-   -nodes: this option requires a not encrypted private key
+-   -days 356: this option sets expiration days to 365. default value is 30 days
+-   -newkey rsa:2048: this option creates a new certificate request and a new private key. The argument rsa:nbits, where nbits is the number of bits, generates an RSA key nbits in size.
+-   -keyout: This options set private key name (optional, using a full path you can also put key in desired folder)
+-   -out: This option set certificate name (optional, using a full path you can also put certificate in desired folder)
+
+To leverage a CA Certification Authority (let's encrypt for example use)
+```bash
+sudo apt install certbot
+
+certbot -certonly --standalone
+```
+More [here](https://certbot.eff.org/instructions)

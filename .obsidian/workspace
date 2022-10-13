@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Git - Fundamentals.md",
+            "file": "Linux Administration.md",
             "mode": "source",
             "source": false
           }
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Git - Fundamentals.md",
+                "file": "Linux Administration.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Git - Fundamentals.md",
+                "file": "Linux Administration.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -117,7 +117,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Git - Fundamentals.md"
+                "file": "Linux Administration.md"
               }
             }
           }
@@ -130,10 +130,10 @@
   },
   "active": "b60d07b89b83b0b8",
   "lastOpenFiles": [
+    "Git - Fundamentals.md",
     "Linux Administration.md",
     "README.md",
     "[Foundations.md",
-    "Git - Fundamentals.md",
     "Docker.md",
     "Apache Spark.md",
     "Apache Scala.md",
