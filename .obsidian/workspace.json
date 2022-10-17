@@ -1,0 +1,180 @@
+{
+  "main": {
+    "id": "d0b0dbad5299debf",
+    "type": "split",
+    "children": [
+      {
+        "id": "b4b084264c52ceea",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b60d07b89b83b0b8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "WireShark - Traffic Analysis.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "9375b3114a0ceb36",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "PowerShell.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "97272a9dee192bbf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Nmap.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ff522336b28afd6d",
+    "type": "split",
+    "children": [
+      {
+        "id": "c398dd0a7640a150",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8622720275a739d9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "8c50131f1147ed80",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#john-the-ripper",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "fdbafdc3a56dc261",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 204.5
+  },
+  "right": {
+    "id": "b1b1533c054bc5e4",
+    "type": "split",
+    "children": [
+      {
+        "id": "dabe283c39193829",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c4efb321b436bfdb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Nmap.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "9c4b264a6b40b24e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Nmap.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "17988711a7139f33",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "2c0741dc886d5947",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Nmap.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "ribbon": {
+    "mostRecentAction": ""
+  },
+  "active": "97272a9dee192bbf",
+  "lastOpenFiles": [
+    "PowerShell.md",
+    "John The Ripper/John The Ripper.md",
+    "John The Ripper/Customer Rules.md",
+    "Hadoop.md",
+    "Linux Administration.md",
+    "Nmap.md",
+    "WireShark - Traffic Analysis.md",
+    "Docker.md",
+    "Git - Fundamentals.md",
+    "README.md"
+  ]
+}
