@@ -42,3 +42,36 @@ sudo apt install certbot
 certbot -certonly --standalone
 ```
 More [here](https://certbot.eff.org/instructions)
+-----------------------------------------------------------------
+List all group on the system:
+
+	/etc/group
+
+List all users, group associated:
+
+	/etc/passwd
+
+Create a new group // Create new user (require sudo priv):
+
+```bash
+groupadd <group-name>
+
+useradd <username>
+```
+
+Add a user to a specific group (require sudo priv):
+
+```bash
+usermod -aG <group-name> <username>
+```
+
+Remove a user to a specific group:
+```bash
+gpasswd -d <username> <group-name>
+```
+
+Remove a specific user:
+```bash
+userdel <username>
+```
+

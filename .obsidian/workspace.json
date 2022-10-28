@@ -42,9 +42,39 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "68fbe2d29a8c080d",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "img/Pasted image 20221012173631.png"
+              }
+            }
+          },
+          {
+            "id": "b098a9540f632c85",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "img/Pasted image 20221028121506.png"
+              }
+            }
+          },
+          {
+            "id": "13430551bfa81d15",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "img/Pasted image 20221013220438.png"
+              }
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -110,7 +140,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Nmap.md",
+                "file": "img/Pasted image 20221013220438.png",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +157,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Nmap.md",
+                "file": "img/Pasted image 20221013220438.png",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +180,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Nmap.md"
+                "file": "img/Pasted image 20221013220438.png"
               }
             }
           }
@@ -164,17 +194,17 @@
   "ribbon": {
     "mostRecentAction": ""
   },
-  "active": "97272a9dee192bbf",
+  "active": "8622720275a739d9",
   "lastOpenFiles": [
+    "img/Pasted image 20221028121506.png",
+    "img/Pasted image 20221012173631.png",
+    "Linux Administration.md",
+    "DEVNET Associate.md",
+    "Nmap.md",
     "PowerShell.md",
     "John The Ripper/John The Ripper.md",
     "John The Ripper/Customer Rules.md",
     "Hadoop.md",
-    "Linux Administration.md",
-    "Nmap.md",
-    "WireShark - Traffic Analysis.md",
-    "Docker.md",
-    "Git - Fundamentals.md",
-    "README.md"
+    "WireShark - Traffic Analysis.md"
   ]
 }
