@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "API Penetration Testing/Active Reconnaissance.md",
+                "file": "Git - Fundamentals.md",
                 "mode": "source",
                 "source": false
               }
@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "API Penetration Testing/Endpoint Analysis.md",
+                "file": "BashScripting/L2.md",
                 "mode": "source",
                 "source": false
               }
@@ -94,7 +94,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 274.5
+    "width": 274.5,
+    "collapsed": true
   },
   "right": {
     "id": "b1b1533c054bc5e4",
@@ -110,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "API Penetration Testing/Endpoint Analysis.md",
+                "file": "BashScripting/L2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "API Penetration Testing/Endpoint Analysis.md",
+                "file": "BashScripting/L2.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "API Penetration Testing/Endpoint Analysis.md"
+                "file": "BashScripting/L2.md"
               }
             }
           }
@@ -163,15 +164,15 @@
   },
   "active": "1849b799fa591ccd",
   "lastOpenFiles": [
+    "[Introduction.md",
+    "BashScripting/L2.md",
+    "Git - Fundamentals.md",
+    "2022-12-06.md",
     "API Penetration Testing/Active Reconnaissance.md",
     "API Penetration Testing/Endpoint Analysis.md",
     "Apache Scala.md",
     "README.md",
-    "L2.md",
-    "2022-12-06.md",
     "WireShark - Traffic Analysis.md",
-    "PowerShell.md",
-    "Nmap.md",
-    "img/Pasted image 20221012173631.png"
+    "PowerShell.md"
   ]
 }
