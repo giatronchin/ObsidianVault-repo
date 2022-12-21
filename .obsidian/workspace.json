@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "BashScripting/L2.md",
+                "file": "BashScripting.md",
                 "mode": "source",
                 "source": false
               }
@@ -69,8 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 274.5,
-    "collapsed": true
+    "width": 274.5
   },
   "right": {
     "id": "b1b1533c054bc5e4",
@@ -86,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "BashScripting/L2.md",
+                "file": "BashScripting.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "BashScripting/L2.md",
+                "file": "BashScripting.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "BashScripting/L2.md"
+                "file": "BashScripting.md"
               }
             }
           }
@@ -149,15 +148,15 @@
   },
   "active": "461ed66be9379e4b",
   "lastOpenFiles": [
+    "BashScripting/BashScripting.md",
+    "BashScripting.md",
+    "[Introduction.md",
+    "Linux Administration.md",
     "API Penetration Testing/Endpoint Analysis.md",
     "README.md",
     "Git - Fundamentals.md",
-    "BashScripting/L2.md",
-    "[Introduction.md",
     "2022-12-06.md",
     "API Penetration Testing/Active Reconnaissance.md",
-    "Apache Scala.md",
-    "WireShark - Traffic Analysis.md",
-    "PowerShell.md"
+    "Apache Scala.md"
   ]
 }

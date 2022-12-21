@@ -173,6 +173,12 @@ Map of the **common exit code**:
 | ----- |----- |
 | >> | Redirect output to (append mode) |
 
+--------------------------------------------------
+
+## Loops
+
+
+
 
 --------------------------------------------------
 List of **command available**:
