@@ -39,6 +39,7 @@ myname="Gigi"
 echo "Ciao il mio nome è $myname" #Will print "Ciao il mio nome è Gigi"
 echo 'Ciao il mio nome è $myname' #Will print "Ciao il mio nome è $myname"
 ```
+**Note**: single-quotes vs double-quotes makes all the difference when it comes to variable evaluation!
 
 ```bash
 echo 'Questo è come stampare l\'apostrofo ' #The escape character \ allow us to use single-quotes string 
@@ -151,11 +152,9 @@ Some external reference [here]([Introduction to if (tldp.org)](https://tldp.org/
 Help determine wether or not a command was successfully executed.
 
 ```bash
-
 ls -l
 
 echo $? #Print the status exit code of the last executed command
-
 ```
 Commonly exit code of 0 means the command was successful, while different code means that something went wrong.
 
@@ -177,6 +176,18 @@ Map of the **common exit code**:
 
 ## Loops
 
+```bash
+#!/bin/bash
+
+myvar=1
+
+while [ $myvar -le 10 ]
+do
+	echo $myvar
+	myvar=$(( $myvar + 1 ))
+	sleep 0.5
+done
+```
 
 
 
