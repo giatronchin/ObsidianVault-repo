@@ -102,7 +102,7 @@ ansible all -m apt -a "name=vim-nox state=latest" --become --ask-become-pass
 ansible all -m apt -a "upgrade=dist" --become --ask-become-pass
 
 ```
-Multiple arguments( -a ) has to be with " ".
+Multiple arguments( -a ) has to be with " ". [ansible.builtin.apt module - Ansible Documentation](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html)
 
 #### Playbooks
 
@@ -121,4 +121,19 @@ Multiple arguments( -a ) has to be with " ".
 Now to run the above playbook:
 ```bash
 ansible-playbook --ask-become-pass install_apache.yml
+```
+
+For example to remove the package, change the "desidered-state" to **absent**:
+```yaml
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: absent
+
 ```
