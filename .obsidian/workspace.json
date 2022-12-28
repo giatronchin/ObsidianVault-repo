@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "cb27afb8dc417a6e",
+        "id": "a4d34cb6883de580",
         "type": "tabs",
         "children": [
           {
-            "id": "461ed66be9379e4b",
+            "id": "44c22c049a334942",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -147,17 +147,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "461ed66be9379e4b",
+  "active": "8622720275a739d9",
   "lastOpenFiles": [
-    "BashScripting/BashScripting.md",
+    "[FHS.md",
     "BashScripting.md",
-    "[Introduction.md",
     "Linux Administration.md",
-    "API Penetration Testing/Endpoint Analysis.md",
-    "README.md",
     "Git - Fundamentals.md",
-    "2022-12-06.md",
-    "API Penetration Testing/Active Reconnaissance.md",
-    "Apache Scala.md"
+    "Hadoop.md",
+    "Docker.md",
+    "DEVNET Associate.md",
+    "BashScripting/BashScripting.md",
+    "[Introduction.md",
+    "API Penetration Testing/Endpoint Analysis.md"
   ]
 }
