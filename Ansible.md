@@ -83,4 +83,42 @@ ansible all -m gather_facts #Print all the info ansible is able to pull from the
 
 ansible all -m gather_facts --limit ip.address.1 #Same as before but target a single host
 
+#Following the same as sudo apt update
+ansible all -m apt -a update_cache=true --become --ask-become-pass 
+#Option -a stands for arguments. Following Become is asking to escalate priviledges to run the module (will prompt asking password)
+```
+**Note**: the last command assume that every single host has the same root password
+
+[Ansible Documentation — Ansible Documentation](https://docs.ansible.com/ansible/latest/)
+
+```bash
+#To install on all worker the vim-nox package(if it is not already)
+ansible all -m apt -a name=vim-nox --become --ask-become-pass
+
+#Same as apt upgrade on vim-nox
+ansible all -m apt -a "name=vim-nox state=latest" --become --ask-become-pass
+
+#Same as apt dist-upgrade
+ansible all -m apt -a "upgrade=dist" --become --ask-become-pass
+
+```
+Multiple arguments( -a ) has to be with " ".
+
+#### Playbooks
+
+```yaml
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+
+```
+Now to run the above playbook:
+```bash
+ansible-playbook --ask-become-pass install_apache.yml
 ```
