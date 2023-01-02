@@ -13,19 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Linux Administration.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "6d149c9b4863a3c3",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Git - Fundamentals.md",
+                "file": "Ansible.md",
                 "mode": "source",
                 "source": false
               }
@@ -37,7 +25,19 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ansible.md",
+                "file": "BashScripting.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "2b8eabff05da58a0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Linux Administration.md",
                 "mode": "source",
                 "source": false
               }
@@ -111,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Ansible.md",
+                "file": "Linux Administration.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -128,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Ansible.md",
+                "file": "Linux Administration.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -151,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Ansible.md"
+                "file": "Linux Administration.md"
               }
             }
           }
@@ -172,12 +172,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "073e423014e1cc86",
+  "active": "2b8eabff05da58a0",
   "lastOpenFiles": [
-    "Git - Fundamentals.md",
-    "Ansible.md",
-    "Linux Administration.md",
     "BashScripting.md",
+    "Linux Administration.md",
+    "Ansible.md",
+    "Git - Fundamentals.md",
     "[FHS.md",
     "Hadoop.md",
     "Docker.md",
