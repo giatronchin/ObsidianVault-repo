@@ -1,7 +1,7 @@
 # Linux
 #linux
 
-
+## Add entry to repository for updates
 By default `apt-key add` adds a key to `/etc/apt/trusted.gpg` . To list all the keys:
 ```
  sudo apt-key list
@@ -20,7 +20,7 @@ sudo add-apt-repository -r <package-repo-name>
 ```
 
 -----------------------------------------------------------------
-
+## Certificate generation
 To generate https **certificate** and **private key**:
 
 ```bash
@@ -41,7 +41,35 @@ sudo apt install certbot
 
 certbot -certonly --standalone
 ```
+
 More [here](https://certbot.eff.org/instructions)
+
+-----------------------------------------------------------------
+## Create and install Linux services
+
+1. Create a  `.service` file with the configuration of the service
+   
+   ```bash
+# Remember Add x permission on script!!!
+
+[Unit]
+Description=service_name
+
+[Service]
+User=root #User that will run the service
+WorkingDirectory=/home/teleBot #Working directory 
+ExecStart=/home/teleBot/bot.py #Location of the startup_script
+Restart=always
+
+[Install]
+WantedBy=multi-user.target #Installation for all user on the system
+   ```
+   
+2.  Place it in `/etc/systemd/system`
+3.  Restart daemons with `sudo systemctl daemon-reload`
+4. Enable service for startup at boot with `sudo systemctl enable example.service`
+
+
 -----------------------------------------------------------------
 List all group on the system:
 
