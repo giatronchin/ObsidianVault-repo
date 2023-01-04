@@ -37,7 +37,11 @@
             "state": {
               "type": "markdown",
               "state": {
+<<<<<<< Updated upstream
                 "file": "Linux Administration.md",
+=======
+                "file": "Docker.md",
+>>>>>>> Stashed changes
                 "mode": "source",
                 "source": false
               }
@@ -94,8 +98,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 274.5,
-    "collapsed": true
+    "width": 274.5
   },
   "right": {
     "id": "b1b1533c054bc5e4",
@@ -111,7 +114,11 @@
             "state": {
               "type": "backlink",
               "state": {
+<<<<<<< Updated upstream
                 "file": "Linux Administration.md",
+=======
+                "file": "Docker.md",
+>>>>>>> Stashed changes
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -128,7 +135,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+<<<<<<< Updated upstream
                 "file": "Linux Administration.md",
+=======
+                "file": "Docker.md",
+>>>>>>> Stashed changes
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -151,7 +162,11 @@
             "state": {
               "type": "outline",
               "state": {
+<<<<<<< Updated upstream
                 "file": "Linux Administration.md"
+=======
+                "file": "Docker.md"
+>>>>>>> Stashed changes
               }
             }
           }
@@ -174,6 +189,12 @@
   },
   "active": "2b8eabff05da58a0",
   "lastOpenFiles": [
+<<<<<<< Updated upstream
+=======
+    "Ansible.md",
+    "Git - Fundamentals.md",
+    "Linux Administration.md",
+>>>>>>> Stashed changes
     "BashScripting.md",
     "Linux Administration.md",
     "Ansible.md",
