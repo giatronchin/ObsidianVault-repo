@@ -37,7 +37,15 @@
             "state": {
               "type": "markdown",
               "state": {
+<<<<<<< HEAD
                 "file": "Linux Administration.md",
+=======
+<<<<<<< Updated upstream
+                "file": "Linux Administration.md",
+=======
+                "file": "Docker.md",
+>>>>>>> Stashed changes
+>>>>>>> master
                 "mode": "source",
                 "source": false
               }
@@ -94,8 +102,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 274.5,
-    "collapsed": true
+    "width": 274.5
   },
   "right": {
     "id": "b1b1533c054bc5e4",
@@ -111,7 +118,15 @@
             "state": {
               "type": "backlink",
               "state": {
+<<<<<<< HEAD
                 "file": "Linux Administration.md",
+=======
+<<<<<<< Updated upstream
+                "file": "Linux Administration.md",
+=======
+                "file": "Docker.md",
+>>>>>>> Stashed changes
+>>>>>>> master
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -128,7 +143,15 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+<<<<<<< HEAD
                 "file": "Linux Administration.md",
+=======
+<<<<<<< Updated upstream
+                "file": "Linux Administration.md",
+=======
+                "file": "Docker.md",
+>>>>>>> Stashed changes
+>>>>>>> master
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -151,7 +174,15 @@
             "state": {
               "type": "outline",
               "state": {
+<<<<<<< HEAD
                 "file": "Linux Administration.md"
+=======
+<<<<<<< Updated upstream
+                "file": "Linux Administration.md"
+=======
+                "file": "Docker.md"
+>>>>>>> Stashed changes
+>>>>>>> master
               }
             }
           }
@@ -174,6 +205,15 @@
   },
   "active": "2b8eabff05da58a0",
   "lastOpenFiles": [
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+    "Ansible.md",
+    "Git - Fundamentals.md",
+    "Linux Administration.md",
+>>>>>>> Stashed changes
+>>>>>>> master
     "BashScripting.md",
     "Linux Administration.md",
     "Ansible.md",
