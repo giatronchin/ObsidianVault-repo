@@ -103,3 +103,31 @@ Remove a specific user:
 userdel <username>
 ```
 
+-----------------------------------------------------------------
+
+In terminal help/docs about commands
+
+```bash
+
+curl cheat.sh/<command>
+
+```
+
+-----------------------------------------------------------------
+
+Where to place script or link to scripts in Linux OS
+
+```bash
+sudo mv /path/to/script /usr/local/bin/
+
+or
+  
+sudo ln -s /path/to/script /usr/local/bin/
+```
+
+-----------------------------------------------------------------
+To print personalized message at ssh login to a server you need to edit two files:
+
+1. `/etc/motd` (Message of the Day)
+
+2. `/etc/ssh/sshd_config`: Change the setting `PrintLastLog` to "no", this will disable the "Last login" message. `PrintMotd` to "yes".
