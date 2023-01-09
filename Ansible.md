@@ -122,6 +122,10 @@ Now to run the above playbook:
 ```bash
 ansible-playbook --ask-become-pass install_apache.yml
 ```
+To limit the playbook execution on a single host we can use the option `--limit host.ip.address`
+```bash
+ansible-playbook --ask-become-pass install_apache.yml --limit 192.168.1.9
+```
 
 For example to remove the package, change the "desidered-state" to **absent**:
 ```yaml
@@ -131,9 +135,63 @@ For example to remove the package, change the "desidered-state" to **absent**:
   become: true
   tasks:
 
+  - name: apt update
+    apt:
+      update_cache: yes
+
   - name: install apache2 package
     apt:
       name: apache2
+      state: latest
+
+  - name: remove apache2 package
+    apt:
+      name: apache2
       state: absent
+
+```
+
+### When
+Differentiate playbook execution based on host distribution for example.
+
+```yaml
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: apt update
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "ubuntu"
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: latest
+	when: ansible_distribution == "ubuntu"
+
+```
+The example will run the task only if it finds out the host distro is "ubuntu". We can leverage parameters fetch from ansible in the `gather_facts` to compose the _when_ condition (just use the parameter keyword).
+
+To check against multiple parameter:
+```yaml
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: apt update
+    apt:
+      update_cache: yes
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: latest
+	when: ansible_distribution in ["Debian", "Ubuntu"]  and ansible_distribution_version == "8.2"
 
 ```

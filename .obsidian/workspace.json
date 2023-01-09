@@ -43,7 +43,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -93,7 +94,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 274.5
+    "width": 274.5,
+    "collapsed": true
   },
   "right": {
     "id": "b1b1533c054bc5e4",
@@ -109,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Linux Administration.md",
+                "file": "Ansible.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -126,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Linux Administration.md",
+                "file": "Ansible.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -149,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Linux Administration.md"
+                "file": "Ansible.md"
               }
             }
           }
@@ -170,10 +172,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "44c22c049a334942",
+  "active": "073e423014e1cc86",
   "lastOpenFiles": [
-    "Ansible.md",
     "Linux Administration.md",
+    "Ansible.md",
     "Docker.md",
     "Git - Fundamentals.md",
     "BashScripting.md",
