@@ -42,6 +42,14 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "28bdc4a40c6e3622",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {}
+            }
           }
         ],
         "currentTab": 2
@@ -94,8 +102,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 274.5,
-    "collapsed": true
+    "width": 274.5
   },
   "right": {
     "id": "b1b1533c054bc5e4",
@@ -174,15 +181,15 @@
   },
   "active": "073e423014e1cc86",
   "lastOpenFiles": [
-    "Linux Administration.md",
+    "PowerShell.md",
+    "README.md",
+    "WireShark - Traffic Analysis.md",
     "Ansible.md",
-    "Docker.md",
     "Git - Fundamentals.md",
+    "Linux Administration.md",
+    "MySQL.md",
+    "Docker.md",
     "BashScripting.md",
-    "[FHS.md",
-    "Hadoop.md",
-    "DEVNET Associate.md",
-    "BashScripting/BashScripting.md",
-    "[Introduction.md"
+    "[FHS.md"
   ]
 }
