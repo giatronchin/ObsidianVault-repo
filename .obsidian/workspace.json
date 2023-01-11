@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ansible.md",
+                "file": "Git - Fundamentals.md",
                 "mode": "source",
                 "source": false
               }
@@ -123,6 +123,7 @@
               "type": "backlink",
               "state": {
                 "file": "Terraform - HashiCorp.md",
+                "file": "Git - Fundamentals.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -140,6 +141,7 @@
               "type": "outgoing-link",
               "state": {
                 "file": "Terraform - HashiCorp.md",
+                "file": "Git - Fundamentals.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -163,6 +165,7 @@
               "type": "outline",
               "state": {
                 "file": "Terraform - HashiCorp.md"
+                "file": "Git - Fundamentals.md"
               }
             }
           }
@@ -185,12 +188,12 @@
   },
   "active": "94e33ac6aad7d34b",
   "lastOpenFiles": [
+    "Linux Administration.md",
+    "Ansible.md",
     "PowerShell.md",
     "README.md",
     "WireShark - Traffic Analysis.md",
-    "Ansible.md",
     "Git - Fundamentals.md",
-    "Linux Administration.md",
     "MySQL.md",
     "Docker.md",
     "BashScripting.md",

@@ -16,6 +16,22 @@ To **stage** some of these changes or a portion of them we have to use the _add_
 git add changed_file_path
 ```
 
+To make **git ignore tracking on specific file** just add them to the `.gitignore` file.
+
+To **stop tracking changes on file already in track** (committed/added at least once):
+```bash
+git update-index --skip-worktree file.txt
+```
+That will ignore changes to that file, both local and upstream, until you decide to allow them again with:
+```bash
+git update-index --no-skip-worktree file.txt
+```
+
+You can get a list of files that are marked skipped with:
+```bash
+git ls-files -v . | grep ^S
+```
+
 To **commit** the staged changes to the local repository:
 ```bash
 git commit -m "Commit message"
