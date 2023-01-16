@@ -93,6 +93,17 @@ To **delete a Git branch** using the terminal, you’re going to want to use the
 git branch -d <branch-to-delete-name>
 ```
 
+This Git command will show you remote branches. The `-r` flag here is short for `--remotes`.
+```bash
+git branch -r
+```
+
+This Git command displays not only the names of remote repositories, but their reference information, including Git commit hash.
+
+```bash
+git ls-remote
+```
+
 ### Checkout
 The Git checkout command tells Git to which branch or commit you want your changes applied. If you want to make changes to a branch that you don’t already have checked out, you will first need to checkout the branch.
 Checking out a Git branch will update your repository’s files to match the snapshot of whichever commit the branch points to.
