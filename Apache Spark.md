@@ -1,11 +1,8 @@
-
-# Apache Spark
-
-
+#functional
 **Distributed Computing**: Tramite la gestione di un 'master' i dati, al momento della memorizzazione sono distribuiti e replicati su diverse macchine(cluster).Il codice e quindi la computazione viene 'portata dove si trovano i dati' in modo da rendere il processing scalabile e resistente ai fault.
 
 Spark Core cuore della piattaforma Spark:
-- distributed data structure(RDD)
+- distributed data structure(RDD) 
 - metodi di transformazione estendibile con librerie
 
 Spark SQL fornisce API per semplificare il lavoro su dati strutturati, consentendo l'uso di un linguaggio SQL su dataset Spark in memoria questo è fatto introducendo il Dataframe su un livello superiore al RDD:
