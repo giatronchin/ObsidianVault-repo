@@ -131,3 +131,15 @@ To print personalized message at ssh login to a server you need to edit two file
 1. `/etc/motd` (Message of the Day)
 
 2. `/etc/ssh/sshd_config`: Change the setting `PrintLastLog` to "no", this will disable the "Last login" message. `PrintMotd` to "yes".
+
+### Hostname
+Get current hostname for the logged in device.
+```bash
+hostname
+```
+Utility to get info about the hostname and to edit it. The info is store in `/etc/hostname`.
+```bash
+sudo hostnamectl set-hostname <new-hostname> #require refresh on the shell
+```
+
+`/etc/hosts` also store hostname and will need to be updated independently.
