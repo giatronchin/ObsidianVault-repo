@@ -364,3 +364,37 @@ print(House.num_rooms) #Output: 8
 **Note** the use of the keywork _self_ in this example. self is a convention in Python, and you may use any other word in its place, but as a practice, it is easy to recognize.
 
 `__init__` it's a method (also known as constructor) that state what action are performed during initializatin of an instance object.
+
+### Inheritance
+Creating a child class is easy as it only require the child class to be passed the **parent class** as one of its arguments.
+`super()` enable the child class to refer parent class methods. Function is a built-in function that can be called inside the derived class and gives access to the methods and variables of the parent classes or sibling classes
+
+**Note**: a class can inherit from multiple parent classes at the same time, just keep reference them as argument in the child class.
+
+`isistance(<instance>, <Class>`) returns True when the instance is a child-class of Class.
+
+**Note**: statements inside a class body get executed **irrespective** of the instance _creation_
+
+### Abstraction
+
+Abstract are class from which we cannot create an instance. 
+Python need to import a module in order to support abstraction. `from abc import ABC`
+It helps to hide inner implementation from parent class.
+
+```python
+from abc import ABC abstractmethod
+
+class SomeAbstractClass(ABC):
+	
+	@abstractmethod
+	def someabstractmethod(self):
+		pass
+
+```
+The `abstractmethod` it's a **decorator** and it helps hide the inner implementation of the method below it. 
+**Note**: a class that has parent class ABC cannot be instanciated unless we overriden the abstract methods first.
+
+## MRO  - Method Order Resolution
+
+It determine the order in which a given method or attribute passed is searched through the hierarch of classes.
+`mro()` return an ordered list of hieritance. Also another function useful is `help()`.
