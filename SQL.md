@@ -73,6 +73,10 @@ Purpose: To add records of data into an existing table. Syntax to insert data in
 
 `INSERT INTO table_name (column1, column2, column3) VALUES (value1, value2, value3);`
 
+Otherwise INSERT INTO also accept output from SELECT statement as input value:
+`INSERT INTO table_name SELECT * FROM source_table`
+
+
 **UPDATE Command**
 
 Purpose: To modify or update data contained within a table in the database. 
