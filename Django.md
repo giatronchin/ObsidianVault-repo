@@ -125,3 +125,90 @@ python manage.py shell #opens up an interactive Python shell inside the projec
 2. Create virtual environment: `python3 -m venv tutorial-env` & `sorce tutorial-env/bin/activate`
 3. Create Django project: `django-admin startproject project-name`
 4. Run development server: `python3 manage.py runserver`
+
+-------
+The `startapp` command option of the `manage.py` script creates a default folder structure for the **app** of that name.
+
+Here’s how to create a **demoapp** in the _demoproject_ folder.
+
+```python
+python manage.py startapp demoapp
+```
+Here's the folder structure after the app creation:
+```bash
+tree demoproject
+	demoproject 
+	│   db.sqlite3 
+	│   manage.py 
+	│ 
+	├───demoapp 
+	│   │   admin.py 
+	│   │   apps.py 
+	│   │   models.py 
+	│   │   tests.py 
+	│   │   views.py 
+	│   │   __init__.py 
+	│   │ 
+	│   └───migrations 
+	│           __init__.py 
+	│ 
+	└───demoproject 
+	    │   asgi.py 
+	    │   settings.py 
+	    │   urls.py 
+	    │   wsgi.py 
+	    │   __init__.py
+```
+
+- **view.py** - a view is a user-defined function that’s called when Django’s URL dispatcher identifies the client’s request URL and matches it with a URL pattern defined in the urls.py file. The auto-created views file is _empty_ at the beginning.
+
+**Note**: For now you can just think of views as Python functions that generate the content that makes up the webpage.
+
+- **urls.py** - This is not created by default at startapp execution. This file has the same scope as the urls.py file in the project folder (`demoproject/demoproject/urls.py`). Anyway urls can be both configured at project as well as at app level (referencing this file in project-level urls.py) as in the  code snippet below:
+```python
+# demoapp/urls.py
+from django.urls import path 
+from . import views 
+
+urlpatterns = [ 
+    path('', views.index, name='index'), 
+]
+```
+
+```python
+# demoproject/urls.py
+from django.contrib import admin 
+from django.urls import include, path 
+
+urlpatterns = [ 
+    path('demo/', include('demoapp.urls')),  
+    path('admin/', admin.site.urls), 
+]
+```
+- **models.py** - The data models required for processing in this app are created in this file. It is empty by default.
+- **tests.py** - the tests to be run on the app in this file
+
+Also the `settings.py` as to be updated accordingly whenever we add an _app_ to the project.
+
+```python
+# demoproject/settings.py
+...
+INSTALLED_APPS = [ 
+    'django.contrib.admin', 
+    'django.contrib.auth',  
+    'django.contrib.contenttypes', 
+    'django.contrib.sessions', 
+    'django.contrib.messages', 
+    'django.contrib.staticfiles', 
+    'demoapp', 
+]
+...
+```
+![[Pasted image 20230125170448.png]]
+A Django application consists of the following components: 
+
+-   **URL dispatcher** (urls.py) - It defines the URL patterns. Each URL pattern is mapped with a view function to be invoked when the client's request URL is found to be matching with it
+-   **View** (views.py)  - The view function reads the _path_, _query_, and _body parameters_ included in the client's request (HTTP or HTTPS) If required, it uses this data to interact with the models to perform CRUD operations.
+-   **Model** (models.py _Python Class_) - Django migrates the attributes of the model class to construct a database table of a matching structure. Django's Object Relational Mapper helps perform _CRUD operations in an object-oriented way_ instead of invoking SQL queries. 
+	- The **view** uses the **client's and the model's data** and **renders** its _response_ using a **template**.
+-   **Template** (html) - folder of html template file mixed with Django Template Language code blocks to render dynamic portion of the page.
