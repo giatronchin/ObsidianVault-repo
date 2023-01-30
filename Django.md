@@ -212,3 +212,137 @@ A Django application consists of the following components: 
 -   **Model** (models.py _Python Class_) - Django migrates the attributes of the model class to construct a database table of a matching structure. Django's Object Relational Mapper helps perform _CRUD operations in an object-oriented way_ instead of invoking SQL queries. 
 	- The **view** uses the **client's and the model's data** and **renders** its _response_ using a **template**.
 -   **Template** (html) - folder of html template file mixed with Django Template Language code blocks to render dynamic portion of the page.
+
+When the user first make an HTTP request it is intercepted by the URL dispatcher , namly the `urls.py` at the **project-level**. This file contains an object `urlpattern` which is basically a list of tuples that maps URL requested by the user and the view function to call.
+- `urls.py` at the project-level often contains reference to the `urls.py` at the **app-level**
+specified via `include(appname.urls)` statement.
+
+```python
+# urls.py @ project-level
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+		path('admin/', admin.site.urls),
+		path('', include(restaurant.urls))
+]
+```
+The views file has the responsability to handle the http request, implement the application logic and return an Http Response. 
+_Note_: Django obtains the HttpRequest object from the context provided by the server. As a client request is received, Django’s URL dispatcher mechanism invokes a view that matches the URL pattern and passes this HTTPRequest object as the first argument so that all the request metadata is available to the view for processing.
+```python
+# views.py @ app-level
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def home(request):
+	return HttpResponse("Welcom to Little Lemon restaurant!")
+```
+It essential to link the `urls.py` file at the project-level with the one at the app-level:
+```python
+# urls.py @ app-level
+from django.urls import path
+from . import views # Import the views.py file shown above
+
+urlspatterns = [
+		# Reference the 'home' function within the views.py file
+		path('', views.home),
+]
+```
+
+### Http Protocol
+
+A request is mainly composed of different components or _headers_:
+- **Method** - `GET`, `POST`, `UPDATE`, `DELETE`, `PUT` are the most common
+- **Path** - The URL that target the requested resource
+- **Protocol Version** - HTTP/1.1 and later
+- **Parameters** - Further information used by the server to hadnle the requests
+	- Host - Client software used by the customer/user to make the request
+	- Accept-Language
+```
+GET / HTTP/1.1
+Host: developer.mozilla.org
+Accept-Language: en
+```
+
+Method different from GET can contains a _body_ of data. Most of the time this body is used by the HTTP response along with the **Status Code**:
+- **Informational** - 100-199
+- **Successful** - 200-299
+- **Redirection** - 300-399
+- **Client Error** - 400-499 (403 _Forbidden or Unauthorized_, 404 _Not Found_)
+- **Server Error** - 500-599
+```
+HTTP/1.1 200 OK
+Date: ....
+Server: ...
+Last-Modified: ...
+Content-Length: 50
+Content-Type: text/html
+```
+
+
+#### HttpRequest Object
+
+- `request.method` - The view logic uses this attribute to identify how the client has approached the server. A browser submits its request using any HTTP methods or verbs – POST**,** GET**,** DELETE**,** and PUT.
+`request.GET` and `request.POST`  The attributes return a dictionary-like object containing GET and POST parameters, respectively.
+- `request.COOKIES` - Returns a dictionary of string keys and values.
+- `request.FILES` - When the user uploads one or more files with a multipart form, they are present in this attribute in the form of UploadedFile objects. By appropriate logic in the view, these uploaded files are saved in the designated folder on the server.
+- `request.user` - The request object also contains information about the current user. This attribute is an **object of django.contrib.auth.models.User** class. However, if the user is unauthenticated, it returns **AnonymousUser**.
+- `request.has_key()` - it helps check whether the GET or POST parameter dictionary has a value for the given key.
+- `request.META['key']` - return the value of a metadata header in the http request
+- `request.schema` - return the schema or protocol used to make the request
+
+#### HttpResponse Object
+Unlike the HttpRequest object, which is supplied by the server’s context, the response object of **HttpResponse** class is _instantiated_ inside the **view** function before it is returned to the client.
+Some of the main attributes and methods of the HttpResponse object are:
+-  `status_code`: returns the HTTP status code corresponding to the response
+-   `content`: returns the byte string of the response.
+-   `__getitem__()`: method that returns the value of a header
+-   `__setitem__()`: method used to add a header
+-   `write()`: This method creates a file-like object.
+
+```python
+...
+path('getuser/<name>/<id>', views.pathview, name='pathview'),
+...
+```
+The `urls.py` pass the pattern mapping and the related variable the 'pathview' view function. This enable the views.py function to levarage on this variables as follow:
+
+```python
+from django.http import HttpResponse 
+
+def pathview(request, name, id): 
+
+    return HttpResponse("Name:{} UserID:{}".format(name, id))
+```
+
+**Path & Path-converters**
+
+The URL pattern treats the identifiers in angular brackets (<..>) as the path parameters. By default, it parses the received value to the string type. Other path converters available are:
+
+-   **str** - Matches any non-empty string and excludes the path separator, '**/**'. This is the default if a converter isn’t included in the expression. 
+-   **int** - Matches zero or any positive integer and returns an int. For example:/customer/<int:id>
+-   **slug** - Matches any slug string consisting of ASCII letters or numbers, including the hyphen and underscore characters.
+-   **uuid** - Matches a formatted UUID.  For example: **075194d3-6885-417e-a8a8-6c931e272f00** and returns a UUID instance.
+-   **path** - Matches any non-empty string and includes the path separator, '/'.
+
+#### Query Strings
+Query strings are an alternative approach to URL parameters for adding URL configurations.
+The client URL may contain a query string linked to the endpoint, for example, http://localhost:8000/getuser/?name=John&id=1
+
+A query string is a sequence of one or more **key=value** pairs concatenated by the **&** symbol. Each _key_ is the **query parameter**. 
+These parameters are fetched by the view from the request object it receives. The request object’s GET property is a dictionary object.
+
+The **key-value pairs in the query string** are added to the `request.GET` property. Hence, the name can be obtained with `request.GET[‘name’]` expression.
+
+The next step is to add the following path in the urls.py file:
+`path('getuser/', views.qryview, name='qryview')`
+
+Declare the **qryview function** in the views.py file.
+```python
+def qryview(request): 
+    name = request.GET['name'] 
+    id = request.GET['id'] 
+    return HttpResponse("Name:{} UserID:{}".format(name, id))
+```
+
+**Body parameters** are not encoded in the URL but they are passed as argument of POST method (`request.POST['body-parameter']`).
