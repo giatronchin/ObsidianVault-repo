@@ -314,6 +314,7 @@ def pathview(request, name, id): 
 
     return HttpResponse("Name:{} UserID:{}".format(name, id))
 ```
+_Note_: notice that 'name' and 'id' variable have to be added to the pathview along with the request argument.
 
 **Path & Path-converters**
 
