@@ -472,3 +472,193 @@ DELETE FROM user WHERE id = 1
 ```python
 User.objects.filter(id=1).delete()
 ```
+
+### Object Model relationship
+Recalling all kind of relationship that can take place in a [[SQL]] db, let's see how Django handle this in the OOP paradigm implemented. Here below an example of 2 table/model-object with a <mark>one-to-one</mark> relationship:
+```python
+class college(Model): 
+    CollegeID = models.IntegerField(primary_key = True) 
+    name = models.CharField(max_length=50) 
+    strength = models.IntegerField() 
+    website=models.URLField()
+```
+
+```python
+class Principal(models.Model): 
+    CollegeID = models.OneToOneField( 
+                College, 
+                on_delete=models.CASCADE 
+                ) 
+    Qualification = models.CharField(max_length=50) 
+    email = models.EmailField(max_length=50)
+```
+
+The associated SQL syntax should look like:
+```sql
+CREATE TABLE "myapp_college" ("CollegeID" integer NOT NULL PRIMARY KEY, "name" varchar(50) NOT NULL, "strength" integer NOT NULL, "website" varchar(200) NOT NULL);
+
+CREATE TABLE "myapp_principal" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "Qualification" varchar(50) NOT NULL, "email" varchar(50) NOT NULL, "CollegeID_id" integer NOT NULL UNIQUE REFERENCES "myapp_college" ("CollegeID") DEFERRABLE INITIALLY DEFERRED);
+```
+Notice that since there's a tight relationship between those object, the **foreign-key** has to implement an `on_delete` logic to process the behaviour in case the associated object in the primary model is deleted.
+
+`on_delete` option can assume three different values:
+-   **CASCADE:** deletes the object containing the `ForeignKey`
+-   **PROTECT:** Prevent deletion of the referenced object.
+-   **RESTRICT:** Prevent deletion of the referenced object by raising `RestrictedError`
+
+Here below an example of 2 table/model-object with a <mark>one-to-many</mark> relationship:
+class Subject(models.Model): 
+```python
+class Subject(models.Model): 
+    Subjectcode = models.IntegerField(primary_key = True) 
+    name = models.CharField(max_length=30) 
+    credits = model.IntegerField()
+```
+
+```python
+class Teacher(models.Model): 
+    TeacherID = models.IntegerField(primary_key=True) 
+    subjectcode=models.ForeignKey( 
+                Subject,  
+                on_delete=models.CASCADE 
+                  ) 
+    Qualification = models.CharField(max_length=50) 
+    email = models.EmailField(max_length=50)
+```
+Associated SQL syntax should look like:
+```sql
+CREATE TABLE "myapp_subject" ("Subjectcode" integer NOT NULL PRIMARY KEY, "name" varchar(30) NOT NULL, "credits" integer NOT NULL, "Qualification" varchar(50) NOT NULL, "email" varchar(50) NOT NULL);
+
+CREATE TABLE "myapp_teacher" ("TeacherID" integer NOT NULL PRIMARY KEY, "Qualification" varchar(50) NOT NULL, "email" varchar(50) NOT NULL, "subjectcode_id" integer NOT NULL REFERENCES "myapp_subject" ("Subjectcode") DEFERRABLE INITIALLY DEFERRED);
+
+CREATE INDEX "myapp_teacher_subjectcode_id_bef86dea" ON "myapp_teacher" ("subjectcode_id");```
+
+At the end a <mark>many-to-many</mark> relationship example:
+```python
+class Teacher(models.Model): 
+    TeacherID = models.IntegerField(primary_key=True) 
+    Qualification = models.CharField(max_length=50) 
+    email = models.EmailField(max_length=50)
+```
+
+```python
+class Subject(models.Model): 
+    Subjectcode = models.IntegerField(primary_key = True) 
+    name = models.CharField(max_length=30) 
+    credits = model.IntegerField() 
+    teacher = model.ManyToManyField(Teacher)
+```
+
+### Migration
+
+As said before Model are OOP representation (or **Object Relational Mapper**) of Django for the adjacent Data Model. To create a model devs just need to declare the model object class in the `models.py`, create a `migration_script` then apply all changes by executing the **migration** script:
+
+```
+python3 manage.py makemigrations   #Create migration script
+python3 manage.py migrate
+```
+
+Django’s migration system has the following commands:
+
+-  `makemigrations` - in the migrations package, a migration script `0001_initial.py`, is created.
+- `migrate` - run the migrate command to apply the tasks in the migrations file to be performed.
+- `sqlmigrate` - shows the SQL query or queries executed when a certain migration script is run.
+- `showmigrations`
+```bash
+(django) C:\django\myproject>python manage.py showmigrations 
+. . . 
+. . . 
+myapp 
+[X] 0001_initial 
+[ ] 0002_rename_name_person_person_name 
+[ ] 0003_person_age 
+. . .
+```
+
+Note: The initial migration (file numbered **0001**) has already migrated. The X mark is indicative of this. However, the next two migrations don’t show the X mark, which means they are pending. If we run the migrate command, both modifications will be reflected in the table structure.
+
+!<mark>Important</mark>!
+Models also needs to be **registred** in the `admin.py` file with the statement `admin.site.register(Model-Name)`.
+
+```python
+# models.py
+from django.db import models
+
+class Drinks(models.Model):
+    drink = models.CharField(max_length=200)
+    price = models.IntegerField()
+```
+
+```python
+# admin.py
+from django.contrib import admin
+from .models import Drinks
+
+admin.site.register(Drinks)
+```
+
+A **QuerySet** is a collection of objects for a given model used in Django. It represents a `SELECT` query. 
+```python
+from django.db import models  
+
+class Customer(models.Model): 
+    name = models.CharField(max_length=255) 
+
+class Vehicle(models.Model): 
+    name = models.CharField(max_length=255) 
+    customer = models.ForeignKey( 
+        Customer, 
+        on_delete=models.CASCADE, 
+        related_name='Vehicle' 
+    )
+```
+To fetch all the objects, use the `all()` method of the Manager (**returns a list of objects**). Let's explore it with an example:
+```python
+#Syntax: model.objects.all() 
+
+lst=Customer.objects.all() 
+```
+### Adding a model object
+  `Create` an object of the Customer class. Give a string parameter to the constructor. The `save()` method of the `models.Model` class creates a row in the Customer table.
+```python
+from demoapp.models import Customer 
+
+#Create a Customer object of the Customer Class
+c=Customer(name="Henry") 
+c.save() #create a row in the Customer Table
+
+#------------------------OR-----------------------------#
+
+# create == INSERT
+Customer.objects.create(name="Hameed") # --->  Returns <Customer: Customer object (2)>
+```
+The `create()` method actually performs the `INSERT` operation of SQL.
+
+### Fetch model objects
+The `Customer.objects` gives the **Manager of the model**. It handles all the CRUD operations on the database table.
+```python
+c=Customer.objects.get(pk=2) 
+c.name # ---> 'Hameed'
+```
+
+Devs can apply filters to the data fetched from the model. This is used to fetch objects satisfying the given criteria. In SQL terms, a `QuerySet` equates to a `SELECT` statement, it is like applying a `WHERE` clause.
+```python
+#Syntax: model.objects.filter(criteria)
+
+mydata = Customer.objects.filter(name__startswith='H')
+```
+
+### Updating and removing a model object
+To **update an object**, such as changing the Customer's name from Henry to Helen, _assign a new value to the name attribute_ and save.
+```python
+# Update
+c=Customer.objects.get(name="Henry") 
+c.name="Helen" 
+c.save() 
+```
+Similarly, the `delete()` method of the model manager physically removes the corresponding row in the model's mapped table.
+```python
+# Delete
+c=Customer.objects.get(pk=4) 
+c.delete() # --->  (1, {'demoapp.Customer': 1}) 
+```
