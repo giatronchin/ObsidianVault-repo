@@ -347,3 +347,128 @@ def qryview(request): 
 ```
 
 **Body parameters** are not encoded in the URL but they are passed as argument of POST method (`request.POST['body-parameter']`).
+
+### Creating URLs and Views
+
+In the `urls.py` file devs can reference the same view file and view.function for multiple URLs. On the other hand to avoid repeating the same `path()` entry we can use **regex** to build flexible URLs thanks to the `django.ulrs.re_path` module.
+
+```python
+# urls.py @ app-level
+from django.urls import path, re_path
+from . import views # Import the views.py file shown above
+
+urlspatterns = [
+		# Reference the 'home' function within the views.py file
+		path('', views.home),
+		path('index/<int: n>', view.index),
+		re_path(regex, view.index),
+]
+```
+
+It's important to use **namespace** to reference specifically view functions within a specific app.
+Namespace can be specificied at the `path()` statement with a third argument **name**. This is especially helpful when we want to target a specific path in an app (via form for example).
+
+```python
+<form action="{% url 'login' %}" method="post">
+#form attributes
+<input type='submit'>
+</form>
+
+<form action="{% url 'demoapp:login' %}" method="post">
+#form attributes
+<input type='submit'>
+</form>
+```
+
+### Error Handling with Django
+
+To address an internal error or a client-request error with customs view devs has to immplement a specific handler in the `urls.py` at the **project-level**. The handler provided by django for this purpose are:
+- `handler400 = 'myproject.views.handler400'`
+- `handler403 = 'myproject.views.handler403'`
+- `handler404 = 'myproject.views.handler404'`
+- `handler500 = 'myproject.views.handler500'`
+
+The custom views mapped are going to used a specific HttpResponse object-type to reply the client request (for custom error-handling function we have to pass the **exception** argument along with the request).
+```python
+from django.http import HttpResponse, HttpResponseNotFound
+
+def my_view(request):
+# ...
+if condition==True:
+	return HttpResponseNotFound('<h1>Page not found</h1>')
+else:
+	return HttpResponse('<h1>Page was found</h1>')
+```
+_Note_: implicitly the HttpResponseNotFound send a status code of 404 within the response.
+
+Other type of HttpResponseError are:
+- **HttpResponseBadRequest**
+- **HttpResponseForbidden**
+
+_Note_: **DEBUG** (within the `settings.py`) settings is by default set to True which means that standard error page will display error information that usually we don't want to be displayed to the end-user.
+
+## Model
+The object equivalent of a **database table** used in Django and acts as a single definitive source 
+of information about your data. Model are class-instances defined in the module `djanog.db.models.Model` and each attribute represent a database field.
+Django also define custom API to interact to the db/Model via python code instead of SQL statements.
+
+```sql
+CREATE TABLE user(
+	"id" serial NOT NULL PRIMARY KEY,
+	"first_name" varchar(30) NOT NULL,
+	"last_name" varchar(30) NOT NULL
+);
+```
+
+```python
+from django.db import models
+
+class User(models.Model):
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
+```
+_Notice that there's no need for a primary key as specified in SQL code as Django takes care of it and creates it in background (devs can ovewrittes that on need)_.
+
+#### CRUD
+Django provides CRUD operations for Model class and their instances.
+##### Create
+```sql
+
+INSERT INTO user(id, first_name, last_name) VALUES (1, "John", "Jones")
+```
+
+```python
+new_user = User(id=1, "John", "Jones")
+new_user.save()
+```
+
+##### Read
+```sql
+SELECT * FROM user WHERE id = 1;
+```
+
+```python
+user = User.objects.get(id=1)
+```
+
+#### Update
+```sql
+UPDATE user
+SET last_name = "Smith"
+WHERE id = 1
+```
+
+```python
+user = User.objects.get(id=1)
+user.last_name = "Smith"
+user.save()
+```
+
+##### Delete
+```sql
+DELETE FROM user WHERE id = 1
+```
+
+```python
+User.objects.filter(id=1).delete()
+```
