@@ -412,6 +412,8 @@ The object equivalent of a **database table** used in Django and acts as a sing
 of information about your data. Model are class-instances defined in the module `djanog.db.models.Model` and each attribute represent a database field.
 Django also define custom API to interact to the db/Model via python code instead of SQL statements.
 
+Devs needs to add the app in `settings.py` under `INSTALLED_APPS` in order being able to create table based on Model class.
+
 ```sql
 CREATE TABLE user(
 	"id" serial NOT NULL PRIMARY KEY,
@@ -426,6 +428,7 @@ from django.db import models
 class User(models.Model):
 	first_name = models.CharField(max_length=30)
 	last_name = models.CharField(max_length=30)
+	db_table = 'table_name_of_your_choice' <------------------Edit to choose a custom table name
 ```
 _Notice that there's no need for a primary key as specified in SQL code as Django takes care of it and creates it in background (devs can ovewrittes that on need)_.
 
@@ -451,7 +454,7 @@ SELECT * FROM user WHERE id = 1;
 user = User.objects.get(id=1)
 ```
 
-#### Update
+##### Update
 ```sql
 UPDATE user
 SET last_name = "Smith"
@@ -473,9 +476,14 @@ DELETE FROM user WHERE id = 1
 User.objects.filter(id=1).delete()
 ```
 
-### Object Model relationship
-Recalling all kind of relationship that can take place in a [[SQL]] db, let's see how Django handle this in the OOP paradigm implemented. Here below an example of 2 table/model-object with a <mark>one-to-one</mark> relationship:
+## Object Model relationship
+Recalling all kind of relationship that can take place in a [[SQL]] db, let's see how Django handle this in the OOP paradigm implemented. 
+
+### One to one 
+Here below an example of 2 table/model-object with a <mark>one-to-one</mark> relationship.
+
 ```python
+# models.py ---> table_name: appname_college
 class college(Model): 
     CollegeID = models.IntegerField(primary_key = True) 
     name = models.CharField(max_length=50) 
@@ -484,6 +492,7 @@ class college(Model): 
 ```
 
 ```python
+# models.py ---> table_name: appname_principal
 class Principal(models.Model): 
     CollegeID = models.OneToOneField( 
                 College, 
@@ -492,6 +501,8 @@ class Principal(models.Model): 
     Qualification = models.CharField(max_length=50) 
     email = models.EmailField(max_length=50)
 ```
+
+**Note**: by default, after migration take place, Django will name the tables in the database something like `appname_modelname`. 
 
 The associated SQL syntax should look like:
 ```sql
@@ -506,6 +517,7 @@ Notice that since there's a tight relationship between those object, the **forei
 -   **PROTECT:** Prevent deletion of the referenced object.
 -   **RESTRICT:** Prevent deletion of the referenced object by raising `RestrictedError`
 
+### One to many
 Here below an example of 2 table/model-object with a <mark>one-to-many</mark> relationship:
 class Subject(models.Model): 
 ```python
@@ -533,6 +545,7 @@ CREATE TABLE "myapp_teacher" ("TeacherID" integer NOT NULL PRIMARY KEY,�
 
 CREATE INDEX "myapp_teacher_subjectcode_id_bef86dea" ON "myapp_teacher" ("subjectcode_id");```
 
+### Many to many
 At the end a <mark>many-to-many</mark> relationship example:
 ```python
 class Teacher(models.Model): 
@@ -662,3 +675,163 @@ Similarly, the `delete()` method of the model manager physically removes the cor
 c=Customer.objects.get(pk=4) 
 c.delete() # --->  (1, {'demoapp.Customer': 1}) 
 ```
+
+## Model Field properties
+
+A Field object has common properties in addition to the field-specific properties. 
+
+- `primary_key` - This parameter is False by default. You can set it to True if you want the mapped field in the table to be used as its primary key. It's not mandatory for the model to have a field with a primary key. In its absence, Django, on its own, creates an IntegerField to hold a unique auto-incrementing number.
+- `default` - You can also specify any default in the form of a value or a function that will be called when a new object is created.
+- `unique` - If this parameter in the field definition is set to True, it will ensure that each object will have a unique value for this field.
+- `choices` - If you want to create a drop-down from which the user should select a value for this field, set this parameter to a list of two-item tuples.
+
+## Model Field types
+
+The `django.models` module has many field types to choose from.
+
+- **CharField:** This is the most used field type. It can hold string data of length specified by max_lenth parameter. For a longer string, use TextField.
+- **IntegerField:** The field can store an integer between -2147483648 to 2147483647. There are BigIntegerField, SmallIntegerField and AutoFieldtypes as well to store integers of varying lengths.
+- **FloatField:** It can store a floating-point number. Its variant DecimalField stores a number with fixed digits in the fractional part.
+- **DateTimeField**: Stores the date and time as an object of Python's datetime.datetime class. The DateField stores datetime.date value.
+- **EmailField**: It’s actually a CharField with an in-built EmailValidator
+- **FileField**: This field is used to save the file uploaded by the user to a designated path specified by the upload_to parameter.
+- **ImageField**: This is a variant of FileField, having the ability to validate if the uploaded file is an image.
+- **URLField**: A CharField having in-built validation for URL.
+
+# Forms
+Almost all web app require input data from user. Django handle this concept with a Form class (`django.forms`). Here below an example of the class:
+
+```python
+# myapp/forms.py
+from django import forms
+
+class NameForm(forms.Form):
+	your_name = forms.CharField(label='your name', max_length=100)
+```
+The `forms.Form` argument is essentialy what has been passed through th HTML form itself via http post request. 
+`label` address the final aspects of the HTML form and `max_length` apply some basic validation onto it.
+The HTML **template** can therefore benefit from this class declaration:
+```html
+<form action="/your-name/" method="post">
+	{{ form }}
+	<input type="submit" value="Submit">
+</form>
+```
+
+The rendered HTML form code looks like:
+```html
+<form action="/your-name/" method="post">
+	<label for="your name">Your name: </name>
+	<input id="your name" type="text" name="your_name" maxlength="100" required>
+		<input type="submit" value="Submit">
+</form>
+```
+
+Form class can be defined in the `forms.py` file and ease greatly the handling of parameters received upon form submission. 
+Furthermore Forms and Models are easly converted into one another in order to smooth the process of persisting data onto a db.
+
+## Form Fields
+Each form class can define a form field by defining a property for the specific class. These fields correspond to the HTML elements they eventually render on the user’s browser
+- `CharField` - text input
+	- `widget`
+- `EmailField` - email input
+- `IntegerField`
+	- `min_value`
+	- `max_value`
+- `FloatField`
+- `MultipleChoiceField`
+- `FileField`
+- `ChoiceField`
+	- `choices` - list of tuples
+- `ImageField`
+
+## Field Arguments
+Form field can be customized by passing the following arguments to shape their HTML behaviour.
+- `required` each field assumes the value is required by default.
+- `label` the argument helps specify a label for the field.
+- `initial` initial values can be set for specific fields.
+- `help-text`  specify descriptive text for the field.
+- `widget` change the aspect of the input field by passing further attributes.
+
+## Form Template
+
+The form object thus translates to HTML script of form – minus the `<form>` as well as the `<table>` tag. To render it on a browser, youhave to first write an HTML template and put the form object in `jinja2` tag. 
+
+```html
+<!-- form.html -->
+<html>
+<body>
+    <form action="/form" action="POST">
+        {% csrf_token %}
+        <table>
+            {{ f }}
+        </table>
+</body>
+<html>
+```
+
+Note: `csrf_token` is a way of saying Django that the data from this form is safe.
+
+Let there be a following view in the app’s `views.py` file which renders the `forms.html` template and sends the ApplicationForm object as a context:
+```python
+# views.py
+from .forms import ApplicationForm 
+
+def index(request): 
+    form = ApplicationForm() 
+    return render(request, 'form.html', {'form': form})
+```
+
+Inside the template, the form can be rendered in different ways.
+- `{{ form.as_table}}` - render the form field as table cells wrapped in `<tr>` tags
+- `{{ form.as_p }}` - will render them wrapped in`<p>` tags.
+- `{{ form.as_ul }}` - will render them wrapped in `<li>` tags.
+- `{{ form.as_div }}` - will render them wrapped in `<div>` tags.
+
+#### Validate and access received Form parameter 
+
+`django.forms` has also a role in the reception of the parameters post within a form. In particular, Form class provides `is_valid()` that runs validation on each field and returns True if all field validation are passed.
+
+```python
+from .forms import ApplicationForm    
+
+def index(request):  
+     if request.method == 'POST': 
+        form = ApplicationForm(request.POST) 
+        # check whether it's valid: 
+        if form.is_valid(): 
+            # process the data  
+            # ... 
+            # ... 
+            return HttpResponse('Form successfully submitted')
+```
+
+After that, still within the `views.py` form parameter can be access via `cleaned_data` attribute of the Form class.
+
+```python
+name = form.cleaned_data['name'] 
+add = form.cleaned_data['address'] 
+post = form.cleaned_data['posts']
+```
+## Models vs Forms
+
+Django also auto-creates the form based on model definitions (it is called **ModelForm**), using field types.
+
+1. In the `models.py` create a class and pass the argument `models.Model`
+2. Define inside of this class the attribute of the model using **Form Field** type
+3. Register the model in the `admin.py` with the `admin.site.register()` method
+4. Create a file in the `myapp` directory called `'forms.py'` and add the following:
+	-   Import the model class from the file `'models.py'`.
+	-   Import the module `forms` from the package `django`
+5. Import the model from `models.py` and forms from `django` module
+6. Create a class passing `forms.ModelForm` as argument
+7. Inside this class create a `Meta` class and define 2 attributes
+	+ `model` = ModelName (define in `models.py`)
+	+ `fields` = list of fields to select from above module ("`__all__`" to grab them all)
+8. Make migrations
+9. Implement your logic in the views.py: instanciate a new ModelForm object and `save()` after assign the attribute values to persist data.
+
+# Admin
+Django’s authorization and authentication system are provided by django.contrib.admin app, which is installed by default. It can be seen in the INSTALLED_APPS in the project’s settings.py file.
+
+A super user has the privilege to add or modify users and groups.
