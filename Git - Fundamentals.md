@@ -158,12 +158,12 @@ As expected this feature merge content of two branches.
 * better for merge conflicts
 * easy to undo
 
-To merge 2 different branch (all pending change has to be commit before merge):
+To merge 2 different branch (all pending change has to be commited before merge):
 ```bash
 git merge <branch-name> #merge current checkout branch with a target branch
 ```
 
-Conflict emerge during merging/rebasing/cherry-picking two branches. When different change apply to the same line code in tw different dataset git arise a conflict issue. Same occur with missing/deleted/created file differences in compared datasets.
+Conflict emerge during merging/rebasing/cherry-picking two branches. When different change apply to the same line code in two different dataset git arise a conflict issue. Same occur with missing/deleted/created file differences in compared datasets.
 
 ![conflicts](https://blog.axosoft.com/wp-content/uploads/2019/04/conflicts.gif)
 
