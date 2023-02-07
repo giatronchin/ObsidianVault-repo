@@ -832,6 +832,256 @@ Django also auto-creates the form based on model definitions (it is called **Mod
 9. Implement your logic in the views.py: instanciate a new ModelForm object and `save()` after assign the attribute values to persist data.
 
 # Admin
-Django’s authorization and authentication system are provided by django.contrib.admin app, which is installed by default. It can be seen in the INSTALLED_APPS in the project’s settings.py file.
+Django’s authorization and authentication system are provided by django.contrib.admin app, which is installed by default. It can be seen in the `INSTALLED_APPS` in the project’s settings.py file.
 
-A super user has the privilege to add or modify users and groups.
+**A super user has the privilege to add or modify users and groups**. Django provide authorization and authentication by `django.contrib.admin` app (installed by default).
+- To check if a user can login into the admin interface you can use the `is_staff` property of the Users class
+
+In the out-of -the-box implementation of Django Admin a user with `is_staff=True` is able to login to the interface, change its permission, manage other users. Let's assume the site has two user:
+- admin which is superuser
+- test which is a user with is_staff = True
+To secure the implementation edi the `admins.py` as follow:
+1. Unregister the existing user profile and register a new one.
+```python
+from django.contrib, import admin
+# Register your models here.
+from django.contrib.auth.models, import User
+# Unregister the provided model admin:
+admin.site.unregister(User)
+```
+
+```python
+from django.contrib.auth.admin import UserAdmin
+
+@admin.register(User)
+class NewAdmin(UserAdmin):
+	pass
+```
+**Note**: You can now add some customizations to how the User Admin functions. At this point, though, if you log in with the super user credentials, there’s no change in the interface.
+
+2. The **UserAdmin** class has a property called `readonly_fields`. You can specify a list of fields that you want the user (or a super user) to be prevented from modifying.
+```python
+from django.contrib.auth.admin import UserAdmin
+@admin.register(User)
+class NewAdmin(UserAdmin):
+	readonly_fields = [
+		'date_joined',
+	]
+```
+3. Instead of restricting all the staff users from changing the value of a certain field, it is possible to allow it for some users and prevent others.
+	The **UserAdmin** class (the base class for NewAdmin class that you have registered in the admin site) has a method known as `get_form()`. This method generates the **change form** for a model. You need to _override it_ to disable the username field in it.
+
+```python
+from django.contrib.auth.admin import UserAdmin
+@admin.register(User)
+class NewAdmin(UserAdmin):
+	#Override default method
+	def get_form(self, request, obj=None, **kwargs):
+		form = super().get_form(request, obj, **kwargs)
+	
+	is_superuser = request.user.is_superuser
+	#User is not superuser disable field 'username' to prevent changes
+	if not is_superuser:
+		form.base_fields['username'].disabled = True
+	
+	return form
+```
+
+Now, let’s customize the **view of models** from the apps added to the project.
+Add a Django app named as _myapp_. Then, register this app in the **INSTALLED_APPS** list of the project’s settings.py.
+```python
+# models.py in 'myapp' folder
+from django.db import models.
+
+class Person(models.Model):
+	last_name = models.TextField()
+	
+	first_name = models.TextField()
+```
+
+Register the model:
+```python
+from django.contrib import admin.
+
+# Register your models here.
+from .models import Person
+admin.site.register(Person)
+```
+Staff are able to the the model 'Persons' from the _admin interface_ but they are not able to really interact with it since all the are able to see is whole count of the records inserted in the model.
+
+Add a method to the model class: the string representation of the object will show the first and last name in concatenated form. 
+```python
+# models.py
+from django.db import models
+
+class Person(models.Model):
+
+	last_name = models.TextField()
+	first_name = models.TextField()
+
+	def __str__(self):
+		return f"{self.last_name}, {self.first_name}"
+```
+To further customize how the models are displayed in the admin interface, **decorate a subclass of ModelAdmin** and **register it** with `@admin.register()` decorator (_just as you did with UserAdmin_). Set the `list_display` attribute of this class to display the fields in columns.
+
+The person model is displayed in the interface with the first and last names in two columns. The columns are **clickable** so that the object **can be edited**. 
+```python
+From django.contrib import admin.
+
+# Register your models here.
+from .models import Person
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+
+	list_display = ("last_name", "first_name")
+	search_fields = ("first_name__startswith", )
+```
+
+#### Create a superuser
+1. `python3 manage.py createsuperuser`
+2. Register the user in the `admins.py` for that specific model
+
+### Users and Permissions
+
+User in Django can be one of three classifications, namely a **superuser**, a **staff user**, or a **user**.
+- A **super user** is a top level user or administrator of the system. This type of user possesses permission to add, change, or delete other users, as well as perform operations on all the data in the project. 
+- A **staff type user** is allowed to **access Django admin interface**. However, a staff user doesn't automatically get the permission to create, read, update, and delete data in the Django admin, it must be given explicitly. Note that a super user is a staff user by default. 
+- Everyone else is **regular user** by default, a user is **not authorized to use the admin site**.
+
+Users are marked as **active by default**. A user may be marked as inactive if it's authentication fails or has been banned for some reason.
+
+Permissions are given following the `<appname>.<action_modelname>`. So for example, let's say you have written an app named 'myapp' with a model name 'mymodel' the syntax would be:
+- `myapp.add_my model`
+- `myapp.change_my model`
+- `myapp.delete_my model`
+- `myapp.view_ my model`
+
+`has_perm` is method that return True or  False based on wether the user possesed that particular permission or not. This could be useful to raise a `PermissionDenied` exception instead of replying with a simple HttpResponse.
+
+```python
+def myview(request):
+	if not request.user.has_perm('myapp.view_model')
+		raise PermissionDenied()
+	return HttpResponse()
+```
+
+### Django Group
+Group is a list of permissions that can be assigned to one or more users. A user can belong to any number of groups. All the permissions listed in the group will be automatically assigned to the user.
+
+#### Model Permissions in Admin Interface
+
+```python
+class Product(models.Model):
+	ProductID: models.IntegerField()
+	name : models.TextField()
+	category : models.TextField
+
+class Meta:
+	permissions = [('can_change_category', 'Can change category')]
+```
+However, outside of the admin environment, the Django models by themselves don't have a mechanism to enforce permissions because it is unaware of the user identity that is performing the action.
+
+The Django app receives user information through the request context. Often, permissions are enforced at the view layer.
+
+#### Enforcing permissions at the view level
+
+If a **user has logged in** and has been authenticated, _its details are available_ to the view function in the form of `request.user` object. If not, the value of **request.user** is an instance of **AnonymousUser**. In that case, the permission to call a view can be denied as follows:
+```python
+from django.core.exceptions import PermissionDenied
+
+def myview(request):
+	if request.user.is_anonymous():
+		raise PermissionDenied()
+```
+- Alternatively, you can decorate the view with a `@login_required` **decorator**. _It only allows access for logged users._
+
+- Another way of restricting access to a view is by using the `@user_passes_test()`**decorator**. It takes **one mandatory argument** (the function to be called) , which is a function returning True or False. If True is returned, the decorated view function defined below it is invoked. This  decorator can accept also another argument _url_ to point at the view the user will be redirect to in the function return False.
+```python
+from django.contrib.auth.decorators import user_passes_test
+
+def testpermission(user):
+	if user.is_authenticated() and user.has_perm("myapp.change_category"):
+		return True
+	else:
+		return False
+
+@user_passes_test(testpermission)
+def change_ctg(request):
+	# Logic for making change to category of product model instance
+
+@login_required(testpermission)
+def view_ctg(request):
+	# Logic for view category of product model instance
+```
+
+The above example enforces the permission on a **function-based view**. Django framework also has a **class-based view** mechanism.
+
+To enforce permissions on a class-based view, you need to use `PermissionRequiredMixin` and set the `permission_required` attribute of the **view class** to the permission you want to enforce.
+
+```python
+# models.py
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic import ListView
+from .models import Product
+
+class ProductListView(PermissionRequiredMixin, ListView):
+
+	permission_required = "myapp.view_product"
+	template_name = "product.html"
+	model = Product
+```
+
+#### Enforcing permissions in Template
+To generate dynamic content on the web page, Django uses its own **template language**. Along with **conditional** and i**terative statements** (if and for), the special variables **user** and **perms** are available inside the template language blocks.
+
+These variables are passed into the template context by the view function. Then, you can check various user attributes, such as is_authenticated and render the information on the web page accordingly. A typical template looks like this:
+
+```html
+<html>
+<body>
+{% if user.is_authenticated %}
+	{# to be rendeed if the user has been authenticated #}
+{% endif %}
+<body>
+</html>
+```
+Also permission can be checked inside the template with the **perms.name syntax**.
+
+#### Enforcing permissions in URL patterns
+
+To configure the pattern, you use the **url()** function, in which the permission decorators can be used.
+```python
+# urls.py
+from django.conf.urls import url
+from django.contrib.auth.decorators import login_required, permission_required
+
+urlpatterns = [
+	url(r'^users_only/', login_required(myview)),
+	
+	url(r'^category/', permission_required('myapp.change_category', login_url='login')(myview)),	
+]
+```
+
+_Note_: user can be created and edited from Django Shell
+
+Django comes with a set of built-in permission for created users. When `django.contrib.auth` is in **INSTALLED_APPS** within `settings.py` automatically Django makes available 4 different functionality for each model defined within installed apps:
+- **add**
+- **change**
+- **delete**
+- **view**
+_Note_: need to 'migrate' in order to make changes effective.
+
+Model/Object permission can be customized by using **ModelAdmin** class as we have shown above. To customize permission using the ModelAdmin we have 4 methods:
+- `view()`
+- `add()`
+- `change()`
+- `delete()`
+
+**User objects** instead has two main fileds: **group** and **user permission**.
+-  **user permission**  - store and reference a single or multiple permission objects. Permission can be edited using the methods:
+	- set()
+	- add()
+	- remove()
+	- clear()
+
+
