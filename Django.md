@@ -1084,4 +1084,51 @@ Model/Object permission can be customized by using **ModelAdmin** class as we ha
 	- remove()
 	- clear()
 
+### Database Configuration
+Default SQL configuration make use of **SQLite**. But this is a case that stands most of the time for quick demo/prototype application.
+Django of course is able to connect and interact with most popular SQL and NoSQL database.
+
+##### MySQL
+How to setup connection:
+- address
+- port number
+- database name
+- **database driver** - responsible for mapping model and translating queries from Python into SQL instructions --> For mysql this driver comes with the installation of `MySQL Client`
+
+To use MySQL, the **driver or connector**, MySQL client needs to be installed. When you connect to a database, the **connection opens on each request and is kept open for a specific time**. The connection is controlled by the `CONN_MAX_AGE` parameter and represents a certain time before the connection is automatically closed.
+All these parameters needs to be provided at the `settings.py` level. Parameters include also `options` file that include credentials for the database connection.
+
+```python
+# settings.py
+DATABASE = {
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME': 'database-name',
+		'HOST': '127.0.0.1',
+		'PORT': '3386',
+		'USER': 'admin',
+		'PASSWORD': 'securepassword',
+		#Options
+		
+	}
+}
+```
+
+Devs can also secure their credentials using the **OPTIONS** parameter to point a specific configuration file on the system:
+```python
+...
+'OPTIONS': {
+	'read_default_file': 'etc/mysql/my.conf'
+}
+...
+```
+The `OPTIONS` field accept different parameters along with:
+-   `sql_mode` -The session SQL mode will be set to the given string. It defaults to `STATIC_TRANS_TABLES` to prevent invalid or missing values from being stored in the database.    
+-   `default-character-set` - The character set to be used. Default is utf8.
+-   `read_default_file` - MySQL configuration file to read.
+-   `init_command` - Initial command to issue to the server upon connection.
+
+The startprojecttemplate installs some Django apps by default. Some examples include admin, auth and sessions.
+**Remember that you need to create the necessary database tables for these apps.**
+`python3 manage.py makemigrations/migrate` require that corrisponding database tables exist in the target db so that default tables can be created.
 
