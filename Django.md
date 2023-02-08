@@ -1132,3 +1132,236 @@ The startprojecttemplate installs some Django apps by default. Some examples inc
 **Remember that you need to create the necessary database tables for these apps.**
 `python3 manage.py makemigrations/migrate` require that corrisponding database tables exist in the target db so that default tables can be created.
 
+## Templates
+ 
+ Composed of static content with proper syntax to create dynamic html content. 
+ 
+ Usually this content is handle by the `views.py` function through the `render()` method. **Render** is a function present in the **django.shortcuts** module.
+ This method accept three arguments:
+ - variable rapresenting the http request received
+ - relative path string to the **html template file**
+ - **dictionary** of parameter to fill in the content of the template
+
+```python
+def index(request, name):       
+    context={'name': name}   
+    return render(request, 'index.html', context)
+```
+
+### Django Template Language DTL
+Consist of construct like **variables**, **tags**, **filters**, **comments** implemented by the **Django Template Engine**.
+- {% comment %} {% endcomment %} - **comments**
+- {{ }} - **variable**
+	- Using dictionary and list with these tags is easier thanks to dot notation
+`{{ my_dict.key }}` --> Access dictionary keys
+`{{ my_dict.attribute }}` --> Access dictionary attributes
+`{{ my_list.0 }}` --> Access first list element
+- **Tags**
+	- **{% if %}{% else %}** - conditional statement
+	- **{% for %}{% endfor %}** - loop statement
+- **Filters**
+
+This allow us to build _loops_ and _conditional flow_.
+
+```html
+<ul>
+{% for item in menu %}
+	{% This is how you comment inside a template%}
+	<li>{{ item.menu_item_name }}</li>
+{% endfor %}
+</ul>
+```
+
+Django also provides an API for loading and rendering templates. You define the configuration settings for the template engine inside `settings.py` under the project directory. It's important to note that the app directory (**APP_DIRS**) setting must be set to **true**. This setting tells Django where to search for templates.
+
+In addition to the Django template engine provided by Django, you can also extend the functionality by using one or **more template engines**. For example, **Jinja2** is a popular template engine used in Python and you can configure the settings for adding these extensions inside the `settings.py` file.
+```python
+# settings.py
+TEMPLATES = [
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': ['restaurant/templates'],
+		'APPS_DIRS': True,
+		'OPTIONS': {
+			"environments": "your-app.jinja2.environment"
+		}
+	}
+]
+```
+The **DIRS** attribute of the **TEMPLATES** variable in the `settings.py` file points to the folder in which the templates are stored. Generally, the **templates folder is in the root project folder**.
+
+One of the best practice using Django is code reusability, in particular by using **templates inheritance**. This means that devs can write the html code for the common based iweb interface and extend it with subcontent listed in other child html files. Here is an example:
+
+```html
+<!- base.html ->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	    <title>Little Lemon</title>
+    </head>
+   
+    <body>
+        <main>
+        {% block content %}{% endblock %}
+        </main>
+    </body>
+</html>
+```
+
+```html
+<!- abouth.html ->
+{% extends 'base.html'%}
+{% block content %}
+<section>
+    <article>
+        <h1>{{ Name }}</h1>
+        <p>Little Lemon is a Mediterranean restaurant</p>
+    </article>
+</section>
+{% endblock %}
+```
+
+**{% block %}** - Defines a block that can be overridden by child templates. **The block is identified by the given name to be overridden in the child template.** First, identify the components that are required because these will be used across all the web pages. Include those that show variable content on each page. Use the block tags to mark the code blocks with variable content as a dummy block or with no contents.
+
+**{% extends** 'base.html' **%}** -  extend creates a parent child relationship where parents functionality can be overwritten include, on the other hand, simply includes rendering a template in the current context.
+
+Other common tags:
+
+**{% csrf_token %}** - This tag is used in a form template as protection to prevent **Cross Site Request Forgeries (CSRF)**. This tag generates a token on the server-side to make sure to cross-check that the incoming requests do not contain the token. If found, they are not executed.
+
+**{% include %}** - Loads a template and renders it with the current context. This is a way of "including" other templates within a template. The template name can either be a variable or a hard-coded (quoted) string, in either single or double quotes.
+Unlike extend tag, include is used to combine multiple template but does not have to involve dynamic content. **This is more likely to be used for clear code purpose and modularity of the code.**
+
+**{% with %}** - This tag sets a local variable that is available between {% with %}and {% endwidth %} tags.
+
+Another best-practice is to place this templates with the **templates folder** within the app directory.
+
+##### Filters
+The filters merely represent the temporarily modified value of a template variable. The filter is applied to a variable by the **|**  symbol.
+
+`{{ variable_name | filtern_name }}`
+
+There are a lot of pre-build filter available like:
+- **upper** - output is a temp upper-case version of the input
+- **lower** - output is a temp lower-case version of the input
+- **length**
+- **wordcount**
+- **first**
+- **last**
+- **default** - default value for the value if it is None
+- **join** - Concat strings
+- **slice** - Similary to python slicer
+```
+nums = [1,2,3,4,5,6,7,8,9]
+
+{{ nums | slice[1:2]  }} --> Return 2, 3
+```
+
+### Template Inheritance Process
+
+We want to build a web app like the following, with the dynamic content displayed only in the content portion.
+
+![[Pasted image 20230208220031.png]]
+
+**Base.html** template, this will never render since the url mapper will call one of the three link to replace the Contents block portion:
+```html
+<!--header-->   
+<div style="height:10%;">   
+	<h2 align="center">Django Web Application</h2>   
+	<hr>   
+</div>
+<!—side bar-->   
+<div style="width:20%; float:left; border-right-style:groove">   
+	<ul>   
+		<b>   
+			<li><a href="/myapp/home/">home</a></li> 
+			<li><a href="/myapp/register/">register</a></li> 
+			<li><a href="/myapp/login/">login</a></li>
+		</b>   
+	</ul>   
+</div>
+<!--contents-->  
+<div style="margin-left:21%;">  
+	<p>   
+	{% block contents %}  
+	  
+	{% endblock %} 
+	</p>  
+</div>
+<!--footer-->   
+<hr>   
+{% block footer %}   
+<div>   
+	<h4 align="right">All rights reserved</h4>   
+</div>   
+{% endblock %}
+```
+
+**Views.py**
+```python
+def home(request): 
+    return render(request, "home.html", {}) 
+
+def register(request): 
+    return render(request, "register.html", {}) 
+
+def login(request): 
+    return render(request, "login.html", {})
+```
+
+**Urls.py**
+```python
+urlpatterns = [  
+. . ., 
+. . ., 
+    path('home/', views.home, name='home'), 
+    path('register/', views.register, name='register'),  
+    path('login/', views.login, name='login'),  
+]
+```
+
+**Child templates**
+
+```html
+<!- home.html ->
+{% extends "base.html" %}
+{% block contents %} 
+<h2 align="center">This is Home page</h2> 
+{% endblock %}
+```
+
+```html
+<!- register.html ->
+{% extends "base.html" %} 
+
+{% block contents %} 
+<h2 align="center">Registration Form appears here</h2> 
+{% endblock %}
+```
+
+```html
+<!- login.html ->
+{% extends "base.html" %} 
+
+{% block contents %} 
+<h2  align="center">Login Form appears here</h2> 
+{% endblock %} 
+
+{% block footer %} 
+{{ block.super }} 
+<h4 align="right">Designed By: Alexa Designs Ltd</h4> 
+{% endblock %}
+```
+Notice that the **{% block.super %**} tag has been used. It is similar to Python’s **super()** function whereby you access the parent class methods in a child class. In the same way, the contents of the footer block will be rendered on the login page. Now, include additional text in the block as a part of the header, for the login page.
+
+#### Statis files
+In addition to the dynamic content, a web application needs to serve certain static content to the client. It may be in the form of images, JavaScript code, or style sheets. Django’s default project template includes django.contrib.staticfiles in `INSTALLED_APPS`.
+
+The project’s settings file (`settings.py`) has a `static_url` property set to `static/`. All the static assets must be placed in the `myapp/static/myapp` folder as the `static_url` refers to it.
+
+While rendering an image from this static folder, load it with the **{% static %}** tag. HTML provides the `<img src>` tag. Instead of giving the physical URL of the image to be rendered, use the path that is relative to the defined static_URL.
+
+```
+{% load static%}
+<img src="{% static 'my_app/example.jpg' %}"
+```
