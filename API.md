@@ -206,3 +206,106 @@ router = DefaultRouter(trailing_slash=False)
 router.register('books', views.BookView, basename='books')
 urlpatterns = router.urls
 ```
+
+## ViewSets
+There are different types of classes that belongs to the ViewSets family. All of them trying to speed up API implementation for the common user.
+
+To use these classes, you must import the viewsets module from the rest_framework:  `from rest_framework import viewsets`.
+
+### 1.ViewSet
+It does extend APIView class bringing browsable API views out of the box. it also provide common methods to address most frequent API use case. To  extend a a ViewSet class: 
+
+`class MenuItemViewSet (viewsets.ViewSet)`
+
+- If the API endpoint has to deal with a <mark>collection of resources</mark>
+
+| Class Method | Supported HTTP Method | Purpose |
+| --- | --- | --- |
+| `list()` | **GET** | Display resource collection |
+| `create()` | **POST** | Create new resource |
+
+- If the API endpoint has to deal with a <mark>single resource</mark>
+
+| Class Method | Supported HTTP Method | Purpose |
+| --- | --- | --- |
+| `retrive()` | **GET** | Display resource collection |
+| `update()` | **PUT** | Create new resource |
+| `partial_update()` | **PATCH** | Display resource collection |
+| `destroy()` | **DELETE** | Create new resource |
+
+### 2.ModelViewSet
+To enable developers to code class-based view that can handle automatically CRUD operations they can extend the ModelViewSet class.
+The class only needs a queryset and a serializer, everything else is handle automatically.
+```python
+class MenuItemView (viewsets.ModelViewSet):
+	...
+```
+### 3.ReadOnlyModelViewSet
+An extension on the same theme is the `ReadOnlyModelViewSet` that as the name suggest will **only allow display** of a single resource or a collection of resources.
+No `POST`, `PUT`, `PATCH`, `DELETE` methods are allowed on this ViewSet.
+
+```python
+class ReadOnlyMenuItemView(viewsets.ReadonlyModelViewSet):
+	...
+```
+
+## Generic View
+Those are ViewSet that facilitate the coding of the simple functionality of the API endpoint. To be able to use those devs have to import `from rest_framework import generics`. The view map specific use-case with multiple View class devs could inherit from. Mixed use-case are allow as long as we extend multiple class.
+
+|Generic view class|Supported method|Purpose|
+| --- | --- | --- |
+| **CreateAPIView** | POST | Create a new resource|
+| **ListAPIView** | GET | Display resource collection|
+| **RetrieveAPIView** | GET | Display a single resource|
+| **DestroyAPIView** | DELETE | Delete a single resource|
+| **UpdateAPIView** | PUT and PATCH | Replace or partially update a single resource|
+| **ListCreateAPIView** | GET, POST | Display resource collection and create a new resource|
+| **RetrieveUpdateAPIView** | GET, PUT, PATCH | Display a single resource and replace or partially update it|
+| **RetrieveDestroyAPIView** | GET, DELETE | Display a single resource and delete it|
+| **RetrieveUpdateDestroyAPIView** | GET, PUT, PATCH, DELETE | Display, replace or update and delete a single resource|
+
+**Example**: API endpoints capable of displaying resource collection and creating a new resource, have to extend both `ListAPIView` and `CreateAPIView`, or just `ListCreateAPIView`.
+```python
+class MenuItemView (generics.ListAPIView, generics.CreateAPIView)
+```
+
+Just like ModelViewSet, you must give these generic view classes a queryset and a serializer and you don’t need to manually write code to perform these database operations. 
+
+## Authentication & Selective Authentication
+If we want **all API calls** to be **authenticated** in a class-based view that extends the generic views, you can add the `permission_classes` public **attribute** in the class.
+
+```python
+permission_classes = [IsAuthenticated]
+```
+
+In case authentication is required only for group of request methods we have to override the methods permission. Let's say we  want to selectively enable authentication for some calls, like POST, PUT, PATCH and DELETE then you need to override the `get_permission` method in your class-based view like this.
+
+```python
+def get_permissions(self):
+        permission_classes = []
+        if self.request.method != 'GET':
+            permission_classes = [IsAuthenticated]
+            
+        return [permission() for permission in permission_classes]
+
+```
+Sometimes in a class-based view that extends a generic view, you may want to return resources created by the authenticated users only. In that case, you need to override the `get_queryset` method. 
+
+```python
+class OrderView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        return Order.objects.all().filter(user=self.request.user)
+```
+
+Eventually although ViewSet aimed to ease the API implementation, devs can achive customization overriding the related DRF method (http-verbs): `get()`, `post()`, `put()`, `patch()`, `delete()`.
+
+```python
+class OrderView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer  
+    def get(self, request, *args, **kwargs):
+        return Response(‘new response’)
+```
