@@ -82,3 +82,127 @@ urlspatterns = [
 	path('api/,'include('BookListAPI.urls')
 ]
 ```
+## Routing in DRF
+
+### Regular Routing
+The code below maps a function from a views.py file to an API endpoint.
+
+```python
+from django.urls import path
+from . import views
+urlpatterns = [
+	path('books’,views.books) ,
+]
+```
+
+As long as the function in the views.py file has the api-decorator  everything works as seen before.
+```python
+# views.py
+@api_view([‘GET’,’POST’])
+```
+
+
+### Routing to a class method
+Devs can also map a specific method from a class. To do this they need to declare that method as a `@staticmethod` first. After that, you can map it in the `urls.py` file. 
+
+```python
+# views.py
+class Orders():
+
+	@staticmethod
+	@api_view()
+	def listOrders(request):
+    	return Response({'message':'list of orders'}, 200)
+```
+The mapping is completed by listing the change in the urls.py at the app level.
+```python
+from django.urls import path
+from . import views
+urlpatterns = [
+	path('orders', views.Orders.listOrders)
+]
+```
+
+### Routing class-based views
+One can save a lot of time in DRF by mapping a class that extends the **APIview**. When a class extends APIview or generic views, you can simply map those classes in the urls.py file.
+
+```python
+# views.py
+class BookView(APIView):
+	def get(self, request, pk):
+    	return Response({"message":"single book with id " + str(pk)}, status.HTTP_200_OK)
+	def put(self, request, pk):
+    	return Response({"title":request.data.get('title')}, status.HTTP_200_OK)
+```
+
+```python
+# urls.py @app level
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('books/<int:pk>',views.BookView.as_view())
+]
+```
+ If the class has post(), delete() and patch() methods, it will work with HTTP POST, DELETE and PATCH methods too.
+
+ ### Routing classes that extend viewsets
+The routing toward classes can go deeper as a class can extend different types of `ViewSets`. Different methods within a child class of ViewSet can be mapped to different urls and http request method.
+
+```python
+# views.py
+class BookView(viewsets.ViewSet):
+	def list(self, request):
+    	return Response({"message":"All books"}, status.HTTP_200_OK)
+	def create(self, request):
+    	return Response({"message":"Creating a book"}, status.HTTP_201_CREATED)
+	def update(self, request, pk=None):
+    	return Response({"message":"Updating a book"}, status.HTTP_200_OK)
+	def retrieve(self, request, pk=None):
+    	return Response({"message":"Displaying a book"}, status.HTTP_200_OK)
+	def partial_update(self, request, pk=None):
+        return Response({"message":"Partially updating a book"}, status.HTTP_200_OK)
+	def destroy(self, request, pk=None):
+    	return Response({"message":"Deleting a book"}, status.HTTP_200_OK)
+```
+Notice how BookView now inherit from the `viewsets.ViewSet` class instead of `APIView`.
+```python
+# urls.py @app level
+urlpatterns = [
+	path('books', views.BookView.as_view(
+    	{
+        	'get': 'list',
+        	'post': 'create',
+    	})
+	),
+    path('books/<int:pk>',views.BookView.as_view(
+    	{
+        	'get': 'retrieve',
+        	'put': 'update',
+        	'patch': 'partial_update',
+        	'delete': 'destroy',
+    	})
+	)
+]
+```
+Url Mapping can be much more flexible thanks to this kind of implementation. Notice how the <mark>HTTP verbs</mark> are mapped with **each method in this class**. Also, note that both the `list()` and `retrieve()` methods are present, although they point both a common http request method: get. The `list()` method is used to **display all books**, and the `retrieve()` method is used to **display a single book**.
+
+### Routing with SimpleRouter class in DRF
+Class that extends ViewSets can use different types of built-in routers to map those classes in your urls.py file. Doing things this way means you don’t have to map the individual methods as you did in the previous section. Initiate a SimpleRouter object and map the class in the urls.py file in your Django app as follows.
+```python
+# urls.py @app level
+from rest_framework.routers import SimpleRouter
+router = SimpleRouter(trailing_slash=False)
+router.register('books', views.BookView, basename='books')
+urlpatterns = router.urls
+```
+Note: Without the argument `trailing_slash=False`, the API endpoints will have a trailing slash. 
+
+### Routing with DefaultRouter class in DRF
+Similar to the SimpleRouter object, it creates an API root endpoint with a trailing slash that displays all your API endpoints in one place (sort of docs-api view of all available endpoints).
+```python
+# urls.py @app level
+from rest_framework.routers import DefaultRouter
+router = DefaultRouter(trailing_slash=False)
+router.register('books', views.BookView, basename='books')
+urlpatterns = router.urls
+```
