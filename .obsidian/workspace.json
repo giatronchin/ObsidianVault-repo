@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "72df37903399d41c",
+            "id": "2450cc03e496b196",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -69,7 +69,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 204.5
+    "width": 204.5,
+    "collapsed": true
   },
   "right": {
     "id": "b1b1533c054bc5e4",
@@ -146,10 +147,9 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "72df37903399d41c",
+  "active": "2450cc03e496b196",
   "lastOpenFiles": [
     "Django.md",
-    "API.md",
     "BashScripting.md",
     "CSS.md",
     "Linux Administration.md",
@@ -157,6 +157,7 @@
     "WireShark - Traffic Analysis.md",
     "Hadoop.md",
     "Git - Fundamentals.md",
-    "README.md"
+    "README.md",
+    "[Foundations.md"
   ]
 }

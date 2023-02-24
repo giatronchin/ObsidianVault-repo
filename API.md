@@ -235,21 +235,30 @@ It does extend APIView class bringing browsable API views out of the box. it als
 
 ### 2.ModelViewSet
 To enable developers to code class-based view that can handle automatically CRUD operations they can extend the ModelViewSet class.
-<<<<<<< HEAD
+
 The class only needs a **queryset** and a **serializer**, everything else is handle automatically.
-=======
+
 The class only needs a queryset and a serializer, everything else is handle automatically.
->>>>>>> master
+
 ```python
 class MenuItemView (viewsets.ModelViewSet):
 	...
 ```
-<<<<<<< HEAD
-<mark>Note</mark>: **Serializer** convert model object into python data type that can be casted into XML or JSON file. Same apply to the HTTP request where serializer help converting request body parameter into python data types.
-Serializers are declared inside a the serializers.py file and are 
 
-=======
->>>>>>> master
+<mark>Note</mark>: **Serializer** convert model object into python data type that can be casted into XML or JSON file. Same apply to the HTTP request where serializer help converting request body parameter into python data types.
+Serializers are declared inside a the serializers.py file and a typical declaration of it resemble the following code:
+
+```python
+# serializers.py @app level
+from rest_framework import serializers
+from .models import MenuItem
+
+class MenuItemSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = MenuItem
+		fields = ['id', 'title', 'price', 'inventory']
+```
+
 ### 3.ReadOnlyModelViewSet
 An extension on the same theme is the `ReadOnlyModelViewSet` that as the name suggest will **only allow display** of a single resource or a collection of resources.
 No `POST`, `PUT`, `PATCH`, `DELETE` methods are allowed on this ViewSet.
@@ -319,7 +328,6 @@ class OrderView(generics.ListCreateAPIView):
     def get(self, request, *args, **kwargs):
         return Response(‘new response’)
 ```
-<<<<<<< HEAD
 
 ## Django Debug Toolbar
 
@@ -350,5 +358,4 @@ In the urls.py devs needs to add:
 # urls.py
 path('__debug__/', include('debug_toolbar.urls'))
 ```
-=======
->>>>>>> master
+
