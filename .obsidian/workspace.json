@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "2450cc03e496b196",
+            "id": "72df37903399d41c",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -147,9 +147,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2450cc03e496b196",
+  "active": "72df37903399d41c",
   "lastOpenFiles": [
     "Django.md",
+    "API.md",
     "BashScripting.md",
     "CSS.md",
     "Linux Administration.md",
@@ -157,7 +158,6 @@
     "WireShark - Traffic Analysis.md",
     "Hadoop.md",
     "Git - Fundamentals.md",
-    "README.md",
-    "[Foundations.md"
+    "README.md"
   ]
 }

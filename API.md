@@ -246,7 +246,7 @@ class MenuItemView (viewsets.ModelViewSet):
 ```
 
 <mark>Note</mark>: **Serializer** convert model object into python data type that can be casted into XML or JSON file. Same apply to the HTTP request where serializer help converting request body parameter into python data types.
-Serializers are declared inside a the serializers.py file and a typical declaration of it resemble the following code:
+Serializers are declared inside a the `serializers.py` in the **app folder** file and a typical declaration of it resemble the following code:
 
 ```python
 # serializers.py @app level
@@ -258,6 +258,7 @@ class MenuItemSerializer(serializers.ModelSerializer):
 		model = MenuItem
 		fields = ['id', 'title', 'price', 'inventory']
 ```
+
 
 ### 3.ReadOnlyModelViewSet
 An extension on the same theme is the `ReadOnlyModelViewSet` that as the name suggest will **only allow display** of a single resource or a collection of resources.
@@ -359,3 +360,101 @@ In the urls.py devs needs to add:
 path('__debug__/', include('debug_toolbar.urls'))
 ```
 
+## Serializers
+
+Serializers make it easy for devs to implement two-way interact between Models and returned values in response to HTTP request.
+Serializers are convient every time devs want to _process_ models data before sending it out. For example if we want o hide some of the field within a model can not be done we a simple view implementation like the following:
+
+```python
+# models.py
+from django.db import models
+
+class MenuItem(models.Model):
+	title = models.CharField(max_length=255)
+	price = models.DecimalField(max_digits=6, decimal_place=2)
+	inventory = models.CharField(max_length=255)
+```
+
+```python
+# views.py
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .model import MenuItem
+
+@api_view()
+def menu_items(request):
+	items = MenuItem.objects.all()
+	return Response(items.values())
+```
+
+Visiting the _menu_item_ endpoint will output all the menu items rendered in json format. Thanks to the DRF functionality the views automatically takes care of converting the resulting **queryset** to a JSON format.
+<mark>Note</mark>: although the implementation is straight forward, customization like hiding one or more field of an object model **can't be done without the help of a serializer**.
+
+```python
+from rest_framework import serializers
+
+class MenuItemSerializer(serializers.Serializer):
+	id = serializers.IntegerField()
+	title = serializers.CharField(max_length=255)
+```
+Serializers field are like Model field and represents the field that will be represented in th HTTP output. The resulting view function will looks like the following code:
+```python
+# views.py
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .model import MenuItem
+
+#added for serialization
+from .serializers import MenuItemSerializer
+
+@api_view()
+def menu_items(request):
+	items = MenuItem.objects.all()
+	serialized_item = MenuItemSerializer(item, many=True)
+	return Response(serialized_item.data)
+```
+ Two important aspects
+ 1. import Serializer previously coded
+ 2. _many=True_ allow to cast a list of objects into a JSON output
+
+This is because in this particular case the queryset returned from the model and store in the 'items' variable is a list of objects. Would the view retrived a single menu item (single object) the "many=True" would not be a requirement.
+```python
+# views.py
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .model import MenuItem
+
+#added for serialization
+from .serializers import MenuItemSerializer
+
+@api_view()
+def single_item(request):
+	items = MenuItem.objects.get(pk=id)
+	serialized_item = MenuItemSerializer(item)
+	return Response(serialized_item.data)
+```
+
+### Model Serializers
+Represents a more convinient way to iteract and operate on models using Serializers.
+```python
+from rest_framework import serializers
+from .model import MenuItem
+
+class MenuItemSerializer(serializers.Serializer):
+	stock = serializers.IntegerField(source='inventory')
+	price_after_tax = serializers.SerializerMethodField(method_name = 'calculate_tax')
+	class Meta:
+		model = MenuItem
+		fields = ['id', 'title', 'price', 'stock']
+		
+	def calculate_tax(self, product:MenuItem):
+		return product.price * Decimal(1.1)
+```
+
+- Import object model required for manipulation
+- Define fields you want to output
+	- Implement logic for field that not part of the original model
+- Write Meta class and assign two variables **model** and **field**
+
+## Relationship Serializers
+To 
