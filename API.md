@@ -457,4 +457,214 @@ class MenuItemSerializer(serializers.Serializer):
 - Write Meta class and assign two variables **model** and **field**
 
 ## Relationship Serializers
-To 
+To convert related models to JSON and output them correctly.
+```python
+# models.py
+
+from django.db import models
+
+class Category(models.Model):
+	slug = models.SlugField()
+	title = models.CharField(max_length=255)
+
+	def __str__(self)-> str:
+		return self.title
+	
+class MenuItem(models.Model):
+	title = models.CharField(max_length=255)
+	price = models.DecimalField(max_digits=6, decimal_places=2)
+	inventory = models.SmallIntegerField()
+	category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
+```
+
+**Note**: devs need to avoid the deletion of a Category if there at least one MenuItem records that include that category.
+
+To show data from related table we need to:
+1. Specify the *field* in the `fields` list of the **Meta** class.
+2.  Add an import statement that show how to fetch that piece of information
+	- import related model category on top
+	- declare a field variable for that data to be stored and **serialize** its content
+3. 
+```python
+# serializers.py
+
+from rest_framework import serializers
+from decimal import Decimal
+from .models import MenuItem
+from .models import Category # <-------
+
+class MenuItemSerializers(serializers.ModelSerializer):
+	stock = serializers.IntegerField(source='inventory')
+	price_after_tax = serializers.SerializerMethodField(method_name='calculate_tax')
+	category = serializers.StringRelatedField() # <------- Require the model class to have a __str__ method defined
+	
+	class Meta:
+		model = MenuItem
+		fields = ['id','title','price','stock', 'price_after_tax','category']
+
+	def calculate_tax(self, product:MenuItem):
+		return product.price * Decimal(1.1)
+```
+ Adjust the previews `views.py` file with the correct sql-like syntax. In this case we are not trying to fetch all menu item object but only the ones related with a specific category.
+```python
+# views.py
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .model import MenuItem
+
+#added for serialization
+from .serializers import MenuItemSerializer
+
+@api_view()
+def menu_items(request):
+	#items = MenuItem.objects.all() <--- Replaced line
+	items = MenuItem.objects.select_related('category').all()
+	serialized_item = MenuItemSerializer(item, many=True)
+	return Response(serialized_item.data)
+
+@api_view()
+def single_item(request):
+	items = MenuItem.objects.get(pk=id)
+	serialized_item = MenuItemSerializer(item)
+	return Response(serialized_item.data)
+```
+
+### Nested Field
+Devs can also fetch the entire **Category** object and display it within the contenxt of a MenuItem object. This require a separate serializer since we are trying to serialize not a single string but a queryset.
+Therefore we can change the `serializers.py` as it follow:
+```python
+# serializers.py
+
+from rest_framework import serializers
+from decimal import Decimal
+from .models import MenuItem
+from .models import Category
+
+class CategorySerialiazer(serializers.ModelSerializer): 
+	class Meta:
+		model = Category
+		fields = ['id','slug','title']
+
+class MenuItemSerializers(serializers.ModelSerializer):
+	stock = serializers.IntegerField(source='inventory')
+	price_after_tax = serializers.SerializerMethodField(method_name='calculate_tax')
+	category = CategorySerializer() # <-------
+	
+	class Meta:
+		model = MenuItem
+		fields = ['id','title','price','stock', 'price_after_tax','category']
+
+	def calculate_tax(self, product:MenuItem):
+		return product.price * Decimal(1.1)
+```
+
+Output would looks like the following:
+
+```json
+[
+	{
+		"id": 1,
+		"title": "Chocolate Cake",
+		"price": "2.50",
+		"stock": 100,
+		"price_after_tax": 2.75,
+		
+		category: {
+			"id": 1,
+			"slug": "icecream",
+			"title": "Icecream"
+		}
+	},
+	{
+		"id": 2,
+		"title": "Vanilla Ice Cream",
+		"price": "1.50",
+		"stock": 100,
+		"price_after_tax": 2.75,
+		category: {
+			"id": 2,
+			"slug": "..",
+			"title": ".."
+		}
+	},
+]
+```
+
+Instead of declaring the category field as `CategorySerializer` you can specify that `depth=1` is in the **Meta** class in `MenuItemSerializer`. This way, all relationships in this serializer will display every field related to that model.  You can change the code of the `MenuItemSerializer` as below.
+```python
+class MenuItemSerializer(serializers.ModelSerializer):
+    stock =  serializers.IntegerField(source='inventory')
+    price_after_tax = serializers.SerializerMethodField(method_name = 'calculate_tax')
+    # category = CategorySerializer()
+
+    class Meta:
+        model = MenuItem
+        fields = ['id','title','price','stock', 'price_after_tax','category']
+        depth = 1 # <----- This way, all relationships in this serializer will display every field related to that model
+
+    def calculate_tax(self, product:MenuItem):
+        return product.price * Decimal(1.1)
+```
+
+
+### Display a related model fields field as a hyperlink
+
+In DRF you can display every related model field as a hyperlink in the API output. Like this: http://127.0.0.1:8000/api/category/{categoryId} for the category field. There are two different ways to do this. The first method is to use the serializer field called HyperlinkedRelatedField and for the second method you use the HyperlinkedModelSerializer.
+
+**Method 1: HyperlinkedRelatedField**
+
+**Step 1: Create and map a new view function**
+
+Every HyperlinkedRelatedField field in a serializer needs a queryset to find the related object and a view name that is used to map the hyperlinked URL pattern.
+
+Thus you have to create a new function in the views.py file that will handle the categoryId endpoints.
+```python
+from .models import Category from .serializers import CategorySerializer
+
+@api_view()
+def category_detail(request, pk):
+    category = get_object_or_404(Category,pk=pk)
+    serialized_category = CategorySerializer(category)
+    return Response(serialized_category.data) 
+```
+Then you map this function in the **urls.py** file with a view name.
+
+```python
+path('category/<int:pk>',views.category_detail, name='category-detail')
+```
+
+_**Tip:**_ _There is a convention you must follow when you create this view name. The rule is that you have to add_ -detail _after the related field name, which is_ category _in the_ MenuItemSerializer_. This is why the view name was_ category-detail _in this code. If the related field name was_ user_, the view name would be_ user-detail_._
+
+**Step 2: Create a HyperLinkedRelatedField in the serializer**
+
+The next step is to change the MenuItemSerializer code. The following code sets the category field as a HyperLinkedRelatedField in the MenuItem serializer.
+```python
+from .models import Category
+
+class MenuItemSerializer(serializers.ModelSerializer):
+    stock =  serializers.IntegerField(source='inventory')
+    price_after_tax = serializers.SerializerMethodField(method_name = 'calculate_tax')
+
+    category = serializers.HyperlinkedRelatedField(
+        queryset = Category.objects.all(),
+        view_name='category-detail'
+    )
+
+    class Meta:
+        model = MenuItem
+        fields = ['id','title','price','stock', 'price_after_tax','category']    
+
+    def calculate_tax(self, product:MenuItem):
+        return product.price * Decimal(1.1)
+```
+Note how a queryset and a view name are provided in the category HyperlinkedRelatedField. The code follows the convention so you can remove the line, view_name='category-detail. It is only necessary if you didn’t follow the convention and you created the view name in a different way in the **urls.py** file.
+
+**Step 3: Add context**
+
+The final step is to add context to the MenuItemSerializer in the menu_items function, as below.
+
+```python
+serialized_item = MenuItemSerializer(items, many=True, context={'request': request})
+```
+**Note**: _The argument_ context={'request': request} _lets the_ menu-items _endpoint display the category field as a hyperlink._
