@@ -668,3 +668,36 @@ The final step is to add context to the MenuItemSerializer in the menu_items fun
 serialized_item = MenuItemSerializer(items, many=True, context={'request': request})
 ```
 **Note**: _The argument_ context={'request': request} _lets the_ menu-items _endpoint display the category field as a hyperlink._
+
+## Deserialization and validation
+Opposite process of serialization and it happens when the client sends some data to your api endpoints and DRF maps those data to an existing model.
+
+```python
+# views.py
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .model import MenuItem
+from .serializers import MenuItemSerializer
+
+#added for serialization
+from .serializers import MenuItemSerializer
+
+@api_view(['GET', 'POST'])
+def menu_items(request):
+	if request.method == 'GET':
+		items = MenuItem.objects.select_related('category').all()
+		serialized_item = MenuItemSerializer(item, many=True)
+		return Response(serialized_item.data)
+	if request.method == 'POST:
+		serialized_item = MenuItemSerializer(data=request.data)
+		serialized_item.is_valid(raise_exception=True) #<---- Validate data sent from client
+		serialized_item.save() #<--- Has to save this data brefore being able to access it
+		return Response(serialized_item.data, status.HTTP_201_CREATED) 
+	
+@api_view()
+def single_item(request, id):
+	items = get_object_or_404(MenuItem, pk=id)
+	serialized_item = MenuItemSerializer(item)
+	return Response(serialized_item.data)
+```
