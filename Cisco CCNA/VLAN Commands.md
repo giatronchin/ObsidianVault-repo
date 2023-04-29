@@ -88,7 +88,7 @@ The table describes the **show vlan** command options.
 
 **Note**: The **show vlan summary** command displays the count of all configured VLANs.
 
-Other useful commands are the `show interfaces _interface-id_ switchport` and the `show interfaces vlan vlan-id` command.
+<mark>Verify configuration</mark>:Other useful commands are the `show interfaces _interface-id_ switchport` and the `show interfaces vlan vlan-id` command.
 
 ## Change VLAN Port Membership & Delete VLANs
 
@@ -101,3 +101,4 @@ DELETE VLAN: The `no vlan vlan-id` **global** configuration mode command is u
 **Caution**: Before deleting a VLAN, reassign all member ports to a different VLAN first. Any ports that are not moved to an active VLAN are unable to communicate with other hosts after the VLAN is deleted and until they are assigned to an active VLAN.
 
 **Note**: To restore a Catalyst switch to its factory default condition, unplug all cables except the console and power cable from the switch. Then enter the **erase startup-config** privileged EXEC mode command followed by the **delete vlan.dat** command.
+
