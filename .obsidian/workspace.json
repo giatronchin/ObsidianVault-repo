@@ -66,9 +66,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "03fc9023c6d07d28",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Cisco CCNA/VLAN Commands.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -134,7 +146,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Cisco CCNA/Basic Router Configuration.md",
+                "file": "Cisco CCNA/VLAN Commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -151,7 +163,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Cisco CCNA/Basic Router Configuration.md",
+                "file": "Cisco CCNA/VLAN Commands.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -174,7 +186,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Cisco CCNA/Basic Router Configuration.md"
+                "file": "Cisco CCNA/VLAN Commands.md"
               }
             }
           }
@@ -195,12 +207,15 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "09e9c7495f5e6244",
+  "active": "03fc9023c6d07d28",
   "lastOpenFiles": [
+    "Pasted image 20230429134620.png",
+    "Pasted image 20230429134033.png",
+    "Cisco CCNA/Basic Router Configuration.md",
+    "Cisco CCNA/VLAN Commands.md",
     "Cisco CCNA/Configure Switch Port at the Physical Layer.md",
     "Cisco CCNA/Switch Verification Commands.md",
     "Cisco CCNA/Secure Remote Access.md",
-    "Cisco CCNA/Basic Router Configuration.md",
     "Cisco CCNA/Switch Management Access.md",
     "Pasted image 20230426150005.png",
     "Apache Scala.md",
