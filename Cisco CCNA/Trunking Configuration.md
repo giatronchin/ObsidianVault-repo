@@ -1,3 +1,4 @@
+#cisco #vlan #trunk #switch #dtp
 A VLAN trunk is a Layer 2 link between two switches that carries traffic for all VLANs (unless the allowed VLAN list is restricted manually or dynamically).
 
 To enable trunk links, configure the interconnecting ports with the set of interface configuration commands shown in the table.
@@ -18,12 +19,12 @@ To enable trunk links, configure the interconnecting ports with the set of inter
 
 Use the `no switchport trunk allowed vlan` and the `no switchport trunk native vlan` commands to remove the allowed VLANs and reset the native VLAN of the trunk. When it is reset to the default state, the trunk allows all VLANs and uses VLAN 1 as the native VLAN.
 
-## Dynamic Trunking Protocol
+## <mark>Dynamic Trunking Protocol</mark> #dtp
 
 An interface can be set to trunking or nontrunking, or to negotiate trunking with the neighbor interface. Trunk negotiation is managed by DTP, which operates on a point-to-point basis only, between network devices.
 
 DTP is a Cisco proprietary protocol that is automatically enabled on Catalyst 2960 and Catalyst 3650 Series switches. DTP manages trunk negotiation only if the port on the neighbor switch is configured in a trunk mode that supports DTP. Switches from other vendors do not support DTP.
-To enable trunking from a Cisco switch to a device that does not support DTP, use the **switchport mode trunk** and **switchport nonegotiate** interface configuration mode commands. This causes the interface to become a trunk, but it will not generate DTP frames.
+To disable DTP or to enable static trunking from a Cisco switch **to a device that does not support DTP**, use the **switchport mode trunk** and **switchport nonegotiate** interface configuration mode commands. This causes the interface to become a trunk, but it will not generate DTP frames.
 
 ```
 S1(config-if)# switchport mode trunk

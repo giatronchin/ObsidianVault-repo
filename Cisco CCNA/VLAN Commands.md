@@ -1,4 +1,4 @@
-#switch #cisco #vlan
+#switch #cisco #vlan #voice #voip
 
 ## VLAN creation
 Cisco IOS command syntax used to add a VLAN to a switch and give it a name

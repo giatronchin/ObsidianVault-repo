@@ -66,3 +66,9 @@ The following commands are especially useful to quickly identify the status of a
 -   **show ip interface brief** and **show ipv6 interface brief** - These display a summary for all interfaces including the IPv4 or IPv6 address of the interface and current operational status.
 -   **show running-config interface** _interface-id_ - This displays the commands applied to the specified interface.
 -   **show ip route** and **show ipv6 route** - These display the contents of the IPv4 or IPv6 routing table stored in RAM. In Cisco IOS 15, active interfaces should appear in the routing table with two related entries identified by the code ‘**C**’ (Connected) or ‘**L**’ (Local). In previous IOS versions, only a single entry with the code ‘**C**’ will appear.
+
+**Filter Show Command Output**:
+- **section** - Shows the entire section that starts with the filtering expression
+- **include** - Includes all output lines that match the filtering expression
+- **exclude** - Excludes all output lines that match the filtering expression
+- **begin** - Shows all the output lines from a certain point, starting with the line that matches the filtering expression
