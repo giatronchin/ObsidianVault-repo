@@ -134,3 +134,67 @@ R1#
 - `show interfaces trunk` - misconfiguration could also be on the trunking port of the switch therefore, it is also useful to verify the active trunk links on a Layer 2 switch
 
 # Layer 3 Switches
+
+Capabilities of a Layer 3 switch include the ability to do the following:
+-   Route from one VLAN to another using multiple **switched virtual interfaces** (SVIs).
+-   Convert a Layer 2 switchport to a Layer 3 interface (i.e., a routed port). A routed port is similar to a physical interface on a Cisco IOS router.
+![[Pasted image 20230503153011.png]]
+
+
+#### D1 VLAN IP Addresses
+|VLAN Interface|IP Address|
+| --- | --- |
+|10|192.168.10.1/24|
+|20|192.168.20.1/24|
+
+#### Layer 3 Switch Configuration
+
+1. **Create the VLANs**
+```
+D1(config)# vlan 10
+D1(config-vlan)# name LAN10
+D1(config-vlan)# vlan 20
+D1(config-vlan)# name LAN20
+D1(config-vlan)# exit
+D1(config)#
+```
+2. **Create the SVI VLAN interfaces**
+```
+D1(config)# interface vlan 10
+D1(config-if)# description Default Gateway SVI for 192.168.10.0/24
+D1(config-if)# ip add 192.168.10.1 255.255.255.0
+D1(config-if)# no shut
+D1(config-if)# exit
+D1(config)#
+D1(config)# int vlan 20
+D1(config-if)# description Default Gateway SVI for 192.168.20.0/24
+D1(config-if)# ip add 192.168.20.1 255.255.255.0
+D1(config-if)# no shut
+D1(config-if)# exit
+D1(config)#
+*Sep 17 13:52:16.053: %LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan10, changed state to up
+*Sep 17 13:52:16.160: %LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan20, changed state to up
+```
+3. **Configure access ports**
+```
+D1(config)# interface GigabitEthernet1/0/6
+D1(config-if)# description Access port to PC1
+D1(config-if)# switchport mode access
+D1(config-if)# switchport access vlan 10
+D1(config-if)# exit
+D1(config)#
+D1(config)# interface GigabitEthernet1/0/18
+D1(config-if)# description Access port to PC2
+D1(config-if)# switchport mode access
+D1(config-if)# switchport access vlan 20
+D1(config-if)# exit
+```
+4. **Enable IP routing** - Finally, enable IPv4 routing with the **ip routing** global configuration command to allow traffic to be exchanged between VLANs 10 and 20. This commmand ust be configured to enable inter-VAN routing on a Layer 3 switch for IPv4.
+```
+D1(config)# ip routing
+D1(config)#
+```
+
+## Inter-VLAN Routing Issues & Fixes
+
+![[Pasted image 20230503161405.png]]
