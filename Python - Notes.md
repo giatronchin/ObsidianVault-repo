@@ -1,4 +1,4 @@
-
+#python
 # File handling
 ```python
 open(<FILE_NAME> | <FILE_LOCATION>, <MODE>)

@@ -1,3 +1,4 @@
+#cli #windows
 Change directory
 ```powershell
 cd .

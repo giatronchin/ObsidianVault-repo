@@ -56,13 +56,13 @@ More [here](https://certbot.eff.org/instructions)
 Description=service_name
 
 [Service]
-User=root #User that will run the service
-WorkingDirectory=/home/teleBot #Working directory 
-ExecStart=/home/teleBot/bot.py #Location of the startup_script
+User=root # User that will run the service
+WorkingDirectory=/home/teleBot # Working directory 
+ExecStart=/home/teleBot/bot.py # Location of the startup_script
 Restart=always
 
 [Install]
-WantedBy=multi-user.target #Installation for all user on the system
+WantedBy=multi-user.target # Installation for all user on the system
    ```
    
 2.  Place it in `/etc/systemd/system`

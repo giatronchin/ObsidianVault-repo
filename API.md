@@ -1,3 +1,4 @@
+#django #python #api
 # Django DRF (Django REST framework)
 
 Django is great for handling data model and with the power of DRF devs can achive data-**serialization** - meaning converting database retrived data to JSON/XML format for API response.

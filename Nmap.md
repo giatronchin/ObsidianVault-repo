@@ -1,3 +1,4 @@
+#nmap #security 
 We present the different approaches that Nmap uses to <mark>discover live hosts</mark>. In particular, we cover:
 
 - **ARP scan**: This scan uses ARP requests to discover live hosts

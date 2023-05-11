@@ -1,4 +1,5 @@
-#Bash is a shell that is present in most Linux based distros.
+#linux
+#bash is a shell that is present in most Linux based distros.
 
 Check which shell you are actually using in your terminal:
 

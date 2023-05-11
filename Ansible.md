@@ -1,4 +1,4 @@
-#ansible #linux 
+#ansible #linux #automation 
 
 ## SSH configuration
 

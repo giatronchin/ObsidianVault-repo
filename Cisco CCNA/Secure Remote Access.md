@@ -1,3 +1,4 @@
+#cisco #router #switch #management
 # Configure SSH
 Before configuring SSH, the switch must be minimally configured with a unique hostname and the correct network connectivity settings.
 

@@ -1,5 +1,5 @@
 # Git
-#git #github #gitkraken
+#git #github #gitkraken #linux
 
 To initialize a repository within a folder_project:
 ```bash

@@ -1,6 +1,6 @@
 # Common SQL Commands
 
-#sql #database 
+#sql #database #cli
 
 The objective of this reading is to teach you how to name and explain the main commands in SQL. SQL is the most widely used database query language. It is designed for retrieving and managing data in a relational database. SQL can be used to perform different types of operations in the database such as accessing data, describing data, manipulating data and setting users roles and privileges (permissions). 
 
