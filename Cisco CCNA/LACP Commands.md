@@ -1,4 +1,4 @@
-#cisco #etherchannel #switch 
+#cisco #etherchannel #switch #lacp #pagp
 
 The following guidelines and restrictions are useful for configuring EtherChannel:
 -   **EtherChannel support** - All Ethernet interfaces must support EtherChannel with no requirement that interfaces be physically contiguous.
@@ -12,6 +12,7 @@ If these settings must be changed, configure them in port channel interface conf
 The port channel can be configured in **access** mode, **trunk** mode (most common), or on a **routed** port.
 
 <mark>Note</mark>: EtherChannel is disabled by default and must be configured.
+<mark>Note</mark>: Cisco version of the protocol is **PAgP**
 
 Configuring EtherChannel with LACP requires the following three steps:
 
