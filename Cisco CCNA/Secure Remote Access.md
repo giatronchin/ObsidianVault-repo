@@ -1,6 +1,22 @@
 #cisco #router #switch #management
+ #ssh #console
+# Secure Console/AUX Connection
+
+This method provides no accountability and the password is sent in plaintext.
+```
+R1(config)# line vty 0 4
+R1(config-line)# password ci5c0
+R1(config-line)# login
+```
+
+---
+
 # Configure SSH
 Before configuring SSH, the switch must be minimally configured with a unique hostname and the correct network connectivity settings.
+
+-   It requires a **username** and a **password**, both of which are **encrypted during transmission**.
+-   The username and password can be **authenticated** by the **local database method**.
+-   It provides more **accountability** because the **username is recorded when a user logs in**.
 
 ## Step 1 - Verify SSH support
 
@@ -32,7 +48,7 @@ How many bits in the modulus [512]: 1024
 The SSH server can authenticate users locally or using an authentication server. To use the local authentication method, create a username and password pair using the **username** _username_ **secret** _password_ global configuration mode command. In the example, the user admin is assigned the password ccna.
 
 ```
-S1(config)# username admin secret ccna
+S1(config)# username Admin secret ccna
 ```
 
 ## **Step 5** - **Configure the vty lines.**
