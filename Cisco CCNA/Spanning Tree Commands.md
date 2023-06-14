@@ -10,7 +10,7 @@ Default is `pvst` Per-VLAN Spanning Tree. MST Multiple Spanning Tree is another 
 
 ##  Discovery Protocol
 
-CDP - Cisco Discovery Protocol
+#CDP - Cisco Discovery Protocol
 ```
 S1(config)# cdp run <-- Enable CDP
 S1(config)# exit
@@ -20,7 +20,7 @@ S1# configure terminal
 S1(config)# no cdp run <-- Stop CDP
 ```
 
-LLDP - Link Layer Discovery Protcol
+#LLDP - Link Layer Discovery Protcol
 ```
 S1(config)# lldp run <-- Enable CDP
 S1(config)# exit

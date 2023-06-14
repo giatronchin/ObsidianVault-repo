@@ -2,6 +2,7 @@
 
 ## VLAN creation
 Cisco IOS command syntax used to add a VLAN to a switch and give it a name
+
 |**Task**|**IOS Command**|
 | --- | --- |
 |Enter global configuration mode.|Switch# **configure terminal**|
