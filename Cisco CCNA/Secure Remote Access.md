@@ -41,6 +41,10 @@ Not all versions of the IOS default to SSH version 2, and SSH version 1 has know
 ```
 S1(config)# crypto key generate rsa
 How many bits in the modulus [512]: 1024
+
+--------------
+
+S1(config)# crypto key generate rsa general-key modulus 2048
 ```
 
 ## **Step 4** - **Configure user authentication.**
