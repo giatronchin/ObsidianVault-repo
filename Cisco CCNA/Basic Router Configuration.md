@@ -38,6 +38,12 @@ To be available, an interface must be:
 -   **Activated** - By default, LAN and WAN interfaces are not activated (**shutdown**). To enable an interface, it must be activated using the **no shutdown** command. (This is similar to powering on the interface.) The interface must also be connected to another device (a hub, a switch, or another router) for the physical layer to be active.
 -   **Description** - Optionally, the interface could also be configured with a short description of up to 240 characters. It is good practice to configure a description on each interface. On production networks, the benefits of interface descriptions are quickly realized as they are helpful in troubleshooting and in identifying a third-party connection and contact information.
 
+<mark>By default interface on a router are *administratively down *</mark>
+
+<mark>Switch's ports on the other hand are not administratively down:</mark>
+- Once connected physically those ports will be up/up
+- If those remain disconnected physically they will remain down/down which it does not imply administratively down
+
 ### IPv4 Loopback Interfaces
 
 Another common configuration of Cisco IOS routers is enabling a loopback interface.

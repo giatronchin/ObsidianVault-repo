@@ -1,15 +1,18 @@
-#cisco #vlan #trunk #intervlan #routing 
+#cisco #vlan #trunk #intervlan #routing #dot1q #8021q 
+
+**IEEE 802.1Q** (shorten *dot1q*) is the **main trunking protocol** that replace older ISL (*Inter-Switch Link* Cisco proprietary protocol).
 # Router-on-a-Stick
 ![[Pasted image 20230503130519.png]]
 
 Concept is to create subinterfaces (logical interfaces associated with the real G0/0/1 interface) and use them to route through different VLANs.
 
 **Router R1 Subinterfaces**
-|**Subinterface**|**VLAN**|**IP Address**|
+
+| **Subinterface** | **VLAN** | **IP Address** |
 | --- | --- | --- |
-|G0/0/1.10|10|192.168.10.1/24|
-|G0/0/1.20|20|192.168.20.1/24|
-|G0/0/1.99|99|192.168.99.1/24|
+| G0/0/1.10 | 10 | 192.168.10.1/24 |
+| G0/0/1.20 | 20 | 192.168.20.1/24 |
+| G0/0/1.99 | 99 | 192.168.99.1/24 |
 
 #### Configuration on S1
 1. Create and name the VLANs
