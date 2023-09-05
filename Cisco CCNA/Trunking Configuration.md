@@ -2,14 +2,16 @@
 A VLAN trunk is a Layer 2 link between two switches that carries traffic for all VLANs (unless the allowed VLAN list is restricted manually or dynamically).
 
 To enable trunk links, configure the interconnecting ports with the set of interface configuration commands shown in the table.
-|**Task**|**IOS Command**|
+
+| **Task** | **IOS Command** |
 | --- | --- |
-|Enter global configuration mode.|Switch# **configure terminal**|
-|Enter interface configuration mode.|Switch(config)# **interface** _interface-id_|
-|Set the port to permanent trunking mode.|Switch(config-if)# **switchport mode trunk**|
-|Sets the native VLAN to something other than VLAN 1.|Switch(config-if)# **switchport trunk native vlan** _vlan-id_|
-|Specify the list of VLANs to be allowed on the trunk link.|Switch(config-if)# **switchport trunk allowed vlan** _vlan-list_|
-|Return to the privileged EXEC mode.|Switch(config-if)# **end**|
+| Enter global configuration mode. | Switch# **configure terminal** |
+| Enter interface configuration mode. | Switch(config)# **interface** _interface-id_ |
+| If Switch supports both dot1q and ISL we need to choose one | Switch(config-if)# **switchport encapsulation dot1q** |
+| Set the port to permanent trunking mode. | Switch(config-if)# **switchport mode trunk** |
+| Sets the native VLAN to something other than VLAN 1. | Switch(config-if)# **switchport trunk native vlan** _vlan-id_ |
+| Specify the list of VLANs to be allowed on the trunk link. | Switch(config-if)# **switchport trunk allowed vlan** _vlan-list_ |
+| Return to the privileged EXEC mode. | Switch(config-if)# **end** |
 
 **Note**: This configuration assumes the use of Cisco Catalyst 2960 switches which automatically use 802.1Q encapsulation on trunk links. Other switches may require manual configuration of the encapsulation. Always configure both ends of a trunk link with the same native VLAN. If 802.1Q trunk configuration is not the same on both ends, Cisco IOS Software reports errors.
 

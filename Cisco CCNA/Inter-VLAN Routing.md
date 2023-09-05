@@ -94,7 +94,7 @@ S2(config-if)# end
 
 #### Configuration on R1
 1. The router-on-a-stick method requires you to create a subinterface for each VLAN to be routed.
-- A subinterface is created using the `interface interface_id.subinterface_id` **global configuration** mode command
+**Note**: A subinterface is created using the `interface interface_id.subinterface_id` **global configuration** mode command
 2. `encapsulation dot1q _vlan_id_ [native]` - This command configures the subinterface to respond to 802.1Q encapsulated traffic from the specified _vlan-id_. The **native** keyword option is only appended to set the native VLAN to something other than VLAN 1.
 3. `ip address ip-address subnet-mask` - This command configures the IPv4 address of the subinterface. This address typically serves as the **default gateway** for the identified VLAN
 
