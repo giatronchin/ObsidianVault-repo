@@ -25,13 +25,19 @@ Use the `no switchport trunk allowed vlan` and the `no switchport trunk nativ
 
 An interface can be set to trunking or nontrunking, or to negotiate trunking with the neighbor interface. Trunk negotiation is managed by DTP, which operates on a point-to-point basis only, between network devices.
 
-DTP is a Cisco proprietary protocol that is automatically enabled on Catalyst 2960 and Catalyst 3650 Series switches. DTP manages trunk negotiation only if the port on the neighbor switch is configured in a trunk mode that supports DTP. Switches from other vendors do not support DTP.
+DTP is a Cisco proprietary protocol that is automatically enabled `switchport mode dynamic desirable` on old devices like Catalyst 2960 and Catalyst 3650 Series switches.
+
+On newer switches `switchport mode dynamic auto` is default administrative mode. 
+
+DTP manages trunk negotiation only if the port on the neighbor switch is configured in a trunk mode that supports DTP. Switches from other vendors do not support DTP.
 To disable DTP or to enable static trunking from a Cisco switch **to a device that does not support DTP**, use the **switchport mode trunk** and **switchport nonegotiate** interface configuration mode commands. This causes the interface to become a trunk, but it will not generate DTP frames.
 
 ```
 S1(config-if)# switchport mode trunk
 S1(config-if)# switchport nonegotiate
 ```
+
+**Note**: also configuring peer port as an access port does lead to DTP disabling.
 
 To re-enable dynamic trunking protocol use the **switchport mode dynamic** **auto** command.
 
@@ -64,3 +70,10 @@ platform. To determine the current DTP mode, issue the `show dtp interface` co
 | Dynamic Desirable | Trunk | Trunk | Access | Trunk |
 | Access | X | Access | Access | Access |
 | Dynamic Auto | Trunk | Trunk | Access | Access |
+
+
+## VTP - VLAN Trunking Protocol
+VTP allows you to configure VLANs on a central VTP server switch and other switches (VTP clients) will synchronize their VLAN database to the server.
+
+It is rarerly used and not reccomended. There are 3 version of the protocol and 3 modes for each device **server**, **client** and **transparent**.
+
