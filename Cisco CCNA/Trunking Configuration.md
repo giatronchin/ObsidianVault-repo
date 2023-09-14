@@ -56,3 +56,11 @@ The default DTP mode is dependent on the Cisco IOS Software version and on the
 platform. To determine the current DTP mode, issue the `show dtp interface` command.
 
 **Note**: A general best practice is to set the interface to **trunk** and **nonegotiate** when a trunk link is required. On links where trunking is not intended, DTP should be turned off.
+
+
+| Administrative Mode | Trunk | Dynamic Desirable | Access | Auto |
+| --- | --- | --- | --- | --- |
+| Trunk | Trunk | Trunk | X | Trunk |
+| Dynamic Desirable | Trunk | Trunk | Access | Trunk |
+| Access | X | Access | Access | Access |
+| Dynamic Auto | Trunk | Trunk | Access | Access |
