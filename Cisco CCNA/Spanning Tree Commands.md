@@ -8,6 +8,19 @@ S1(config)# spanning-tree mode [ mst | pvst | rapid-pvst ]
 
 Default is `pvst` Per-VLAN Spanning Tree. MST Multiple Spanning Tree is another option.
 
+
+### Original STP
+
+| STP Port State | Send/Receive BPDUs | Frame forwarding (regular traffic) | MAC address Learning | Stable/Transitional |
+| --- | --- | --- | --- | --- |
+| BLOCKING | NO/YES | NO | NO | Stable |
+| LISTENING | YES/YES | NO | NO | Transitional |
+| LEARNING | YES/YES | NO | YES | Transitional |
+| FORWARDING | YES/YES | YES | YES | Stable |
+| DISABLED | NO/NO | NO | NO | Stable |
+
+
+
 ##  Discovery Protocol
 
 #CDP - Cisco Discovery Protocol
