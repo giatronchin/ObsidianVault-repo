@@ -54,3 +54,11 @@ S1(config)# no cdp run <-- Stop CDP
 ```
 
 Note: use them on spot when needed otherwise disable them for security reason.
+
+### PortFast 
+Allow port that comes online to go directy from **blocking** to **forwarding** state as long as it can be used only with port connected to end-devices.
+
+```
+SW1(config)# interface g0/2
+SWI(config-if)# spanning-tree portfast
+```
