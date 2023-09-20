@@ -19,6 +19,16 @@ Default is `pvst` Per-VLAN Spanning Tree. MST Multiple Spanning Tree is another 
 | FORWARDING | YES/YES | YES | YES | Stable |
 | DISABLED | NO/NO | NO | NO | Stable |
 
+**Note**: Switch will forward BDPU only via their Designated port never using Root or Non-Designated ports.
+
+#### TIMER
+
+| STP Timer | Purpose | Duration |
+| --- | --- | --- |
+| Hello | How often the root bridge sends hello BPDUs | 2 sec |
+| Forward delay | How long the switch will stay in the **listening** and **learning** states (each is 15 sec = 30 sec total ) | 15 sec |
+| Max Age | How long an interface will wait after ceasing to receive Hello BPDUs to change the STP topology | 20 sec (10 x Hello timer) |
+
 
 
 ##  Discovery Protocol
