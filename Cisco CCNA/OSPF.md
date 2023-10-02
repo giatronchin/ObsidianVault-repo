@@ -370,3 +370,89 @@ O        10.10.2.0/24 [110/20] via 10.1.1.6, 00:04:31, GigabitEthernet0/0/0
 O        10.10.3.0/24 [110/30] via 10.1.1.6, 00:03:21, GigabitEthernet0/0/0
 R1#
 ```
+
+## Timers
+
+### Hello Interval
+ OSPFv2 Hello packets are transmitted to multicast address 224.0.0.5 (all OSPF routers) every 10 seconds. This is the default timer value on multiaccess and point-to-point networks.
+### Dead Interval
+The Dead interval is the period that the router waits to receive a Hello packet before declaring the neighbor down. If the Dead interval expires before the routers receive a Hello packet, OSPF removes that neighbor from its link-state database (LSDB). The router floods the LSDB with information about the down neighbor out all OSPF-enabled interfaces. Cisco uses a default of 4 times the Hello interval. This is 40 seconds on multiaccess and point-to-point networks.
+
+#verification**Hello** and **Dead** intervals are set to the default **10 seconds** and **40 seconds** respectively has shown in the output of the `show ip ospf interface g0/0/0` command.
+
+```
+R1# show ip ospf interface g0/0/0
+GigabitEthernet0/0/0 is up, line protocol is up 
+  Internet Address 10.1.1.5/30, Area 0, Attached via Interface Enable
+  Process ID 10, Router ID 1.1.1.1, Network Type POINT_TO_POINT, Cost: 10
+  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
+        0           10        no          no            Base
+  Enabled by interface config, including secondary ip addresses
+  Transmit Delay is 1 sec, State POINT_TO_POINT
+  
+  ---> Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5 <---
+	oob-resync timeout 40
+    Hello due in 00:00:06
+  Supports Link-local Signaling (LLS)
+  Cisco NSF helper support enabled
+  IETF NSF helper support enabled
+  Index 1/2/2, flood queue length 0
+  Next 0x0(0)/0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1 
+    Adjacent with neighbor 2.2.2.2
+  Suppress hello for 0 neighbor(s)
+R1#
+```
+
+#verification Use the **show ip ospf neighbor** command to see the Dead Time counting down from 40 seconds, as shown in the following example. By default, this value is refreshed every 10 seconds when R1 receives a Hello from the neighbor.
+
+```
+R1# show ip ospf neighbor 
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+3.3.3.3           0   FULL/  -        00:00:35    10.1.1.13       GigabitEthernet0/0/1
+2.2.2.2           0   FULL/  -        00:00:31    10.1.1.6        GigabitEthernet0/0/0
+R1#
+```
+
+
+
+OSPFv2 Hello and Dead intervals can be modified manually using the following interface configuration mode commands:
+
+`Router(config-if)# ip ospf hello-interval seconds`
+
+`Router(config-if)# ip ospf dead-interval seconds`
+
+Use the `no ip ospf hello-interval` and `no ip ospf dead-interval` commands to reset the intervals to their default.
+
+## Default Route Propagation
+#gateway #edge-router
+
+Your network users will need to send packets out of your network to non-OSPF networks, such as the internet. This is where you will need to have a default static route that they can use. In the topology in the figure, R2 is connected to the internet and should propagate a default route to R1 and R3. The router connected to the internet is sometimes called the edge router or the gateway router. However, in OSPF terminology, the router located between an OSPF routing domain and a non-OSPF network is called the autonomous system boundary router (ASBR).
+
+![[Pasted image 20231002165452.png]]
+All that is required for R2 to reach the internet is a default static route to the service provider.
+
+**Note**: In this example, a loopback interface with IPv4 address 64.100.0.1 is used to simulate the connection to the service provider.
+
+To propagate a default route, the edge router (R2) must be configured with the following:
+
+- A default static route using the `ip route 0.0.0.0 0.0.0.0 [next-hop-address | exit-intf]` command.
+- The `default-information originate` router configuration command. <mark>This instructs R2 to be the source of the default route information and propagate the default static rute in OSPF updates.</mark>
+
+In the following example, R2 is configured with a loopback to simulate a connection to the internet. **Then a default route is configured and propagated to all other OSPF routers in the routing domain.**
+
+**Note**: When configuring static routes, best practice is to use the next-hop IP address. However, when simulating a connection to the internet, there is no next-hop IP address. Therefore, we use the _exit-intf_ argument
+
+```
+R2(config)# interface lo1
+R2(config-if)# ip address 64.100.0.1 255.255.255.252 
+R2(config-if)# exit
+R2(config)# ip route 0.0.0.0 0.0.0.0 loopback 1
+%Default route without gateway, if not a point-to-point interface, may impact performance
+R2(config)# router ospf 10
+R2(config-router)# default-information originate
+R2(config-router)# end
+R2#
+```
