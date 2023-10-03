@@ -321,12 +321,12 @@ This command must be configured on every router in the OSPF domain. Notice that 
 
 Whichever method is used, it is important **to apply the configuration to all routers in the OSPF routing domain.** The table shows the OSPF cost if the reference bandwidth is adjusted to accommodate 10 Gigabit Ethernet links. <mark>The reference bandwidth should be adjusted anytime there are links faster than FastEthernet (100 Mbps)</mark>.
 
-| Interface Type | ReferenceBandwidth in bps | Default Bandwidth in bps|Cost|
-|---|---|---|---|---|
-|10 Gigabit Ethernet  <br>10 Gbps|10,000,000,000|÷|10,000,000,000|1|
-|Gigabit Ethernet  <br>1 Gbps|10,000,000,000|÷|1,000,000,000|10|
-|Fast Ethernet  <br>100 Mbps|10,000,000,000|÷|100,000,000|100|
-|Ethernet  <br>10 Mbps|10,000,000,000|÷|10,000,000|1000|
+| Interface Type | ReferenceBandwidth in bps | Default Bandwidth in bps | Cost |
+| --- | --- | --- | --- | --- |
+| 10 Gigabit Ethernet 10 Gbps | 10,000,000,000 | ÷ | 10,000,000,000 | 1 |
+| Gigabit Ethernet 1 Gbps | 10,000,000,000 | ÷ | 1,000,000,000 | 10 |
+| Fast Ethernet 100 Mbps | 10,000,000,000 | ÷ | 100,000,000 | 100 |
+| Ethernet 10 Mbps | 10,000,000,000 | ÷ | 10,000,000 | 1000 |
 
 Use the `show ip ospf interface g0/0/0` command to verify the current OSPFv2 cost assigned to the R1 GigabitEthernet 0/0/0 interface. 
 
