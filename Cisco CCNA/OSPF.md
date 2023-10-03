@@ -54,7 +54,7 @@ R1#
 
 ### Modify a Router ID
 
-After a router selects a router ID, an active OSPF router does not allow the router ID to be changed until the router is reloaded or the OSPF process is reset.
+<ins>After a router selects a router ID, an active OSPF router does not allow the router ID to be changed until the router is reloaded or the OSPF process is reset.</ins>
 
 In example for R1, the configured router ID has been removed and the router reloaded. Notice that the current router ID is 10.10.1.1, which is the Loopback 0 IPv4 address. The router ID should be 1.1.1.1. Therefore, R1 is configured with the command **router-id 1.1.1.1**.
 
