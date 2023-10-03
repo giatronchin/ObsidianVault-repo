@@ -429,7 +429,7 @@ Use the `no ip ospf hello-interval` and `no ip ospf dead-interval` commands 
 ## Default Route Propagation
 #gateway #edge-router
 
-Your network users will need to send packets out of your network to non-OSPF networks, such as the internet. This is where you will need to have a default static route that they can use. In the topology in the figure, R2 is connected to the internet and should propagate a default route to R1 and R3. The router connected to the internet is sometimes called the edge router or the gateway router. However, in OSPF terminology, the router located between an OSPF routing domain and a non-OSPF network is called the autonomous system boundary router (ASBR).
+Your network users will need to send packets out of your network to non-OSPF networks, such as the internet. This is where you will need to have a default static route that they can use. In the topology in the figure, R2 is connected to the internet and should propagate a default route to R1 and R3. The router connected to the internet is sometimes called the edge router or the gateway router. However, in OSPF terminology, the router located between an OSPF routing domain and a non-OSPF network is called the <ins>autonomous system boundary router</ins> (**ASBR**).
 
 ![[Pasted image 20231002165452.png]]
 All that is required for R2 to reach the internet is a default static route to the service provider.
@@ -456,3 +456,141 @@ R2(config-router)# default-information originate
 R2(config-router)# end
 R2#
 ```
+Notice that the route source on R1 and R3 is O*E2, signifying that it was learned using OSPFv2. The asterisk identifies this as a good candidate for the default route. The E2 designation identifies that it is an external route. The meaning of E1 and E2 is beyond the scope of this module.
+
+e.g output from R3
+```
+R3# show ip route | begin Gateway
+Gateway of last resort is 10.1.1.9 to network 0.0.0.0
+O*E2  0.0.0.0/0 [110/1] via 10.1.1.9, 00:12:04, GigabitEthernet0/0/1
+      10.0.0.0/8 is variably subnetted, 9 subnets, 3 masks
+O        10.1.1.4/30 [110/20] via 10.1.1.9, 00:49:08, GigabitEthernet0/0/1
+C        10.1.1.8/30 is directly connected, GigabitEthernet0/0/1
+L        10.1.1.10/32 is directly connected, GigabitEthernet0/0/1
+C        10.1.1.12/30 is directly connected, GigabitEthernet0/0/0
+L        10.1.1.13/32 is directly connected, GigabitEthernet0/0/0
+O        10.10.1.0/24 [110/30] via 10.1.1.9, 00:49:08, GigabitEthernet0/0/1
+O        10.10.2.0/24 [110/20] via 10.1.1.9, 00:49:08, GigabitEthernet0/0/1
+C        10.10.3.0/24 is directly connected, Loopback0
+L        10.10.3.1/32 is directly connected, Loopback0
+R3#
+```
+As you know, the following two commands are particularly useful for verifying routing:
+
+| show ip interface brief | This verifies that the desired interfaces are active with correct IP addressing. |
+| --- | --- |
+| show ip route | This verifies that the routing table contains all the expected routes. |
+
+```
+R1# show ip ospf neighbor 
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+3.3.3.3           0   FULL/  -        00:00:19    10.1.1.13       GigabitEthernet0/0/1
+2.2.2.2           0   FULL/  -        00:00:18    10.1.1.6        GigabitEthernet0/0/0
+R1#
+```
+For each neighbor, this command displays the following:
+
+- Neighbor ID - This is the router ID of the neighboring router.
+- Pri - This is the OSPFv2 priority of the interface. This value is used in the DR and BDR election.
+- State - This is the OSPFv2 state of the interface. FULL state means that the router and its neighbor have identical OSPFv2 LSDBs. On multiaccess networks, such as Ethernet, two routers that are adjacent may have their states displayed as 2WAY. The dash indicates that no DR or BDR is required because of the network type.
+- Dead Time - This is the amount of time remaining that the router waits to receive an OSPFv2 Hello packet from the neighbor before declaring the neighbor down. This value is reset when the interface receives a Hello packet.
+- Address - This is the IPv4 address of the interface of the neighbor to which this router is directly connected.
+- Interface - This is the interface on which this router has formed adjacency with the neighbor.
+
+---
+
+```
+R1# show ip protocols
+*** IP Routing is NSF aware ***
+(output omitted)
+Routing Protocol is "ospf 10"
+  Outgoing update filter list for all interfaces is not set
+  Incoming update filter list for all interfaces is not set
+  Router ID 1.1.1.1
+  Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+  Maximum path: 4
+  Routing for Networks:
+  Routing on Interfaces Configured Explicitly (Area 0):
+    Loopback0
+    GigabitEthernet0/0/1
+    GigabitEthernet0/0/0
+  Routing Information Sources:
+    Gateway         Distance      Last Update
+    3.3.3.3              110      00:09:30
+    2.2.2.2              110      00:09:58
+  Distance: (default is 110)
+R1#
+```
+
+Info included are: OSPFv2 **process ID**, the **router ID**, **interfaces explicitly configured** to advertise OSPF routes, the **neighbors the router is receiving updates from**, and the **default administrative distance** (<mark>110 for OSPF</mark>).
+
+---
+
+The show ip ospf command can also be used to examine the **OSPFv2 process ID** and **router ID**, as shown in the following command output. This command displays the **OSPFv2 area** information and the **last time the SPF algorithm was executed**.
+
+```
+R1# show ip ospf      
+ Routing Process "ospf 10" with ID 1.1.1.1
+ Start time: 00:01:47.390, Time elapsed: 00:12:32.320
+ Supports only single TOS(TOS0) routes
+ Supports opaque LSA
+ Supports Link-local Signaling (LLS)
+ Supports area transit capability
+ Supports NSSA (compatible with RFC 3101)
+ Supports Database Exchange Summary List Optimization (RFC 5243)
+ Event-log enabled, Maximum number of events: 1000, Mode: cyclic
+ Router is not originating router-LSAs with maximum metric
+ Initial SPF schedule delay 5000 msecs
+ Minimum hold time between two consecutive SPFs 10000 msecs
+ Maximum wait time between two consecutive SPFs 10000 msecs
+ Incremental-SPF disabled
+ Minimum LSA interval 5 secs
+ Minimum LSA arrival 1000 msecs
+ LSA group pacing timer 240 secs
+ Interface flood pacing timer 33 msecs
+ Retransmission pacing timer 66 msecs
+ EXCHANGE/LOADING adjacency limit: initial 300, process maximum 300
+ Number of external LSA 1. Checksum Sum 0x00A1FF
+ Number of opaque AS LSA 0. Checksum Sum 0x000000
+ Number of DCbitless external and opaque AS LSA 0
+ Number of DoNotAge external and opaque AS LSA 0
+ Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+ Number of areas transit capable is 0
+ External flood list length 0
+ IETF NSF helper support enabled
+ Cisco NSF helper support enabled
+ Reference bandwidth unit is 10000 mbps
+    Area BACKBONE(0)
+        Number of interfaces in this area is 3
+	Area has no authentication
+	SPF algorithm last executed 00:11:31.231 ago
+	SPF algorithm executed 4 times
+	Area ranges are
+	Number of LSA 3. Checksum Sum 0x00E77E
+	Number of opaque link LSA 0. Checksum Sum 0x000000
+	Number of DCbitless LSA 0
+	Number of indication LSA 0
+	Number of DoNotAge LSA 0
+	Flood list length 0
+R1#
+```
+---
+
+Additional commands for determining that OSPF is operating as expected include the following:
+
+```
+show ip ospf neighbor
+show ip protocols
+show ip ospf
+show ip ospf interface - provides a detailed list for every OSPFv2-enabled interface. This command shows the process ID, the local router ID, the type of network, OSPF cost, DR and BDR information on multiaccess links (not shown), and adjacent neighbors.
+```
+
+#### Common Problems
+
+
+**Two routers may not form an OSPFv2 adjacency** if the following occurs:
+
+- The subnet masks do not match, causing the routers to be on separate networks.
+- The OSPFv2 Hello or Dead Timers do not match.
+- The OSPFv2 Network Types do not match.
+- There is a missing or incorrect OSPFv2 network command.
