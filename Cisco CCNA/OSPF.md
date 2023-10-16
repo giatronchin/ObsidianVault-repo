@@ -416,9 +416,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 R1#
 ```
 
-
-
-OSPFv2 Hello and Dead intervals can be modified manually using the following interface configuration mode commands:
+OSPFv2 Hello and Dead intervals can be **modified manually** using the following interface configuration mode commands:****
 
 `Router(config-if)# ip ospf hello-interval seconds`
 
@@ -475,10 +473,12 @@ C        10.10.3.0/24 is directly connected, Loopback0
 L        10.10.3.1/32 is directly connected, Loopback0
 R3#
 ```
-As you know, the following two commands are particularly useful for verifying routing:
 
-| show ip interface brief | This verifies that the desired interfaces are active with correct IP addressing. |
+As you know, the following two commands are particularly useful for #verification purposes:
+
+| Command | Description |
 | --- | --- |
+| show ip interface brief | This verifies that the desired interfaces are active with correct IP addressing. |
 | show ip route | This verifies that the routing table contains all the expected routes. |
 
 ```
