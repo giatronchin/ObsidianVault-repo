@@ -1,7 +1,10 @@
 #switch #cisco #vlan #voice #voip
 
+**Default**: on a switch VLAN 1, 1002 - 1005 exist and **can't be deleted**
 ## VLAN creation
+
 Cisco IOS command syntax used to add a VLAN to a switch and give it a name
+
 |**Task**|**IOS Command**|
 | --- | --- |
 |Enter global configuration mode.|Switch# **configure terminal**|
@@ -20,7 +23,7 @@ S1(config-vlan)# end
 
 ## VLAN Port Assignment Commands
 
-After creating a VLAN, the next step is to assign ports to the VLAN.
+After creating a VLAN, the next step is to assign ports to the VLAN. <mark>VLANs are **not required to exist before** assignment to an interface.</mark>
 
 The table displays the syntax for defining a port to be an access port and assigning it to a VLAN. The **switchport mode access** command is optional, but strongly recommended as a security best practice. With this command, the interface changes to strictly access mode. Access mode indicates that the port belongs to a single VLAN and will not negotiate to become a trunk link.
 
@@ -33,6 +36,12 @@ The table displays the syntax for defining a port to be an access port and assig
 |Return to the privileged EXEC mode.|Switch(config-if)# **end**|
 
 **Note**: Use the **interface range** command to simultaneously configure multiple interfaces.
+
+```
+S1(config)# interface range g1/0 - 3
+S1(config-if-range)# switchport mode access
+S1(config-if-range)# switchport access vlan 10
+```
 
 In the figure, port F0/6 on switch S1 is configured as an access port and assigned to VLAN 20. Any device connected to that port will be associated with VLAN 20. Therefore, in our example, PC2 is in VLAN 20.
 ![[Pasted image 20230429134033.png]]
@@ -75,6 +84,8 @@ S3(config-if)# end
 
 **Note:** The `switchport access vlan` command forces the creation of a VLAN if it does not already exist on the switch.
 
+<mark>Verify configuration</mark>
+
 The **show vlan** command displays a list of all configured VLANs. The **show vlan** command can also be used with options. The complete syntax is `show vlan [brief | id vlan-id | name vlan-name | summary]`.
 
 The table describes the **show vlan** command options.
@@ -88,7 +99,7 @@ The table describes the **show vlan** command options.
 
 **Note**: The **show vlan summary** command displays the count of all configured VLANs.
 
-<mark>Verify configuration</mark>:Other useful commands are the `show interfaces _interface-id_ switchport` and the `show interfaces vlan vlan-id` command.
+Other useful commands are the `show interfaces _interface-id_ switchport` and the `show interfaces vlan vlan-id` command.
 
 ## Change VLAN Port Membership & Delete VLANs
 

@@ -1,5 +1,71 @@
 #cisco #router #switch #management
  #ssh #console
+
+# Secure Access to Priviledge Mode
+
+```
+R1(config)# enable password CCNA
+```
+
+Note: we choose 'CCNA' as password. This field is **case-sensitive**.
+Password can still be read as clear text in the configuration file of the device:
+```
+R1# show running-config
+Building configuration...
+
+Current configuration : 719 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+!
+hostname R1
+!
+!
+!
+enable password CCNA
+!
+```
+
+To hidden that content with encryption we can use the following command:
+
+```
+R1(config)# service password-encryption 
+```
+
+This command will use by default the encryption algorithm from Cisco (e.g code **7**):
+```
+R1# show running-config
+Building configuration...
+
+Current configuration : 719 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+!
+hostname R1
+!
+!
+!
+enable password 7 08026F6028
+!
+```
+
+Encryption mode 7 is not such secure protocol therefore is a best practice to use a different encryption mode, like 5 (**MD5**):
+
+```
+R1(config)# enable secret CCNA
+```
+
+This mode does not require `service password-encryption`. `enable secret` take precedence over  `enable password`.
+
+## To remove/undone a command previously issued
+
+```
+R1(config)# no command-issued
+```
+
 # Secure Console/AUX Connection
 
 This method provides no accountability and the password is sent in plaintext.

@@ -1,15 +1,18 @@
-#cisco #vlan #trunk #intervlan #routing 
+#cisco #vlan #trunk #intervlan #routing #dot1q #8021q 
+
+**IEEE 802.1Q** (shorten *dot1q*) is the **main trunking protocol** that replace older ISL (*Inter-Switch Link* Cisco proprietary protocol).
 # Router-on-a-Stick
 ![[Pasted image 20230503130519.png]]
 
 Concept is to create subinterfaces (logical interfaces associated with the real G0/0/1 interface) and use them to route through different VLANs.
 
 **Router R1 Subinterfaces**
-|**Subinterface**|**VLAN**|**IP Address**|
+
+| **Subinterface** | **VLAN** | **IP Address** |
 | --- | --- | --- |
-|G0/0/1.10|10|192.168.10.1/24|
-|G0/0/1.20|20|192.168.20.1/24|
-|G0/0/1.99|99|192.168.99.1/24|
+| G0/0/1.10 | 10 | 192.168.10.1/24 |
+| G0/0/1.20 | 20 | 192.168.20.1/24 |
+| G0/0/1.99 | 99 | 192.168.99.1/24 |
 
 #### Configuration on S1
 1. Create and name the VLANs
@@ -91,7 +94,7 @@ S2(config-if)# end
 
 #### Configuration on R1
 1. The router-on-a-stick method requires you to create a subinterface for each VLAN to be routed.
-- A subinterface is created using the `interface interface_id.subinterface_id` **global configuration** mode command
+**Note**: A subinterface is created using the `interface interface_id.subinterface_id` **global configuration** mode command
 2. `encapsulation dot1q _vlan_id_ [native]` - This command configures the subinterface to respond to 802.1Q encapsulated traffic from the specified _vlan-id_. The **native** keyword option is only appended to set the native VLAN to something other than VLAN 1.
 3. `ip address ip-address subnet-mask` - This command configures the IPv4 address of the subinterface. This address typically serves as the **default gateway** for the identified VLAN
 

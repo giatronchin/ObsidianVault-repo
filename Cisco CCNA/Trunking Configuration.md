@@ -2,14 +2,16 @@
 A VLAN trunk is a Layer 2 link between two switches that carries traffic for all VLANs (unless the allowed VLAN list is restricted manually or dynamically).
 
 To enable trunk links, configure the interconnecting ports with the set of interface configuration commands shown in the table.
-|**Task**|**IOS Command**|
+
+| **Task** | **IOS Command** |
 | --- | --- |
-|Enter global configuration mode.|Switch# **configure terminal**|
-|Enter interface configuration mode.|Switch(config)# **interface** _interface-id_|
-|Set the port to permanent trunking mode.|Switch(config-if)# **switchport mode trunk**|
-|Sets the native VLAN to something other than VLAN 1.|Switch(config-if)# **switchport trunk native vlan** _vlan-id_|
-|Specify the list of VLANs to be allowed on the trunk link.|Switch(config-if)# **switchport trunk allowed vlan** _vlan-list_|
-|Return to the privileged EXEC mode.|Switch(config-if)# **end**|
+| Enter global configuration mode. | Switch# **configure terminal** |
+| Enter interface configuration mode. | Switch(config)# **interface** _interface-id_ |
+| If Switch supports both dot1q and ISL we need to choose one | Switch(config-if)# **switchport encapsulation dot1q** |
+| Set the port to permanent trunking mode. | Switch(config-if)# **switchport mode trunk** |
+| Sets the native VLAN to something other than VLAN 1. | Switch(config-if)# **switchport trunk native vlan** _vlan-id_ |
+| Specify the list of VLANs to be allowed on the trunk link. | Switch(config-if)# **switchport trunk allowed vlan** _vlan-list_ |
+| Return to the privileged EXEC mode. | Switch(config-if)# **end** |
 
 **Note**: This configuration assumes the use of Cisco Catalyst 2960 switches which automatically use 802.1Q encapsulation on trunk links. Other switches may require manual configuration of the encapsulation. Always configure both ends of a trunk link with the same native VLAN. If 802.1Q trunk configuration is not the same on both ends, Cisco IOS Software reports errors.
 
@@ -23,13 +25,19 @@ Use the `no switchport trunk allowed vlan` and the `no switchport trunk nativ
 
 An interface can be set to trunking or nontrunking, or to negotiate trunking with the neighbor interface. Trunk negotiation is managed by DTP, which operates on a point-to-point basis only, between network devices.
 
-DTP is a Cisco proprietary protocol that is automatically enabled on Catalyst 2960 and Catalyst 3650 Series switches. DTP manages trunk negotiation only if the port on the neighbor switch is configured in a trunk mode that supports DTP. Switches from other vendors do not support DTP.
+DTP is a Cisco proprietary protocol that is automatically enabled `switchport mode dynamic desirable` on old devices like Catalyst 2960 and Catalyst 3650 Series switches.
+
+On newer switches `switchport mode dynamic auto` is default administrative mode. 
+
+DTP manages trunk negotiation only if the port on the neighbor switch is configured in a trunk mode that supports DTP. Switches from other vendors do not support DTP.
 To disable DTP or to enable static trunking from a Cisco switch **to a device that does not support DTP**, use the **switchport mode trunk** and **switchport nonegotiate** interface configuration mode commands. This causes the interface to become a trunk, but it will not generate DTP frames.
 
 ```
 S1(config-if)# switchport mode trunk
 S1(config-if)# switchport nonegotiate
 ```
+
+**Note**: also configuring peer port as an access port does lead to DTP disabling.
 
 To re-enable dynamic trunking protocol use the **switchport mode dynamic** **auto** command.
 
@@ -54,3 +62,18 @@ The default DTP mode is dependent on the Cisco IOS Software version and on the
 platform. To determine the current DTP mode, issue the `show dtp interface` command.
 
 **Note**: A general best practice is to set the interface to **trunk** and **nonegotiate** when a trunk link is required. On links where trunking is not intended, DTP should be turned off.
+
+
+| Administrative Mode | Trunk | Dynamic Desirable | Access | Auto |
+| --- | --- | --- | --- | --- |
+| Trunk | Trunk | Trunk | X | Trunk |
+| Dynamic Desirable | Trunk | Trunk | Access | Trunk |
+| Access | X | Access | Access | Access |
+| Dynamic Auto | Trunk | Trunk | Access | Access |
+
+
+## VTP - VLAN Trunking Protocol
+VTP allows you to configure VLANs on a central VTP server switch and other switches (VTP clients) will synchronize their VLAN database to the server.
+
+It is rarerly used and not reccomended. There are 3 version of the protocol and 3 modes for each device **server**, **client** and **transparent**.
+

@@ -22,7 +22,8 @@ Based on the output of the **show interfaces** command, possible problems can 
 -   If the interface is administratively down, it has been manually disabled (the **shutdown** command has been issued) in the active configuration.
 
 The same command output a bunch of statistics about the interfaces. Some are collected and define as below:
-|**Error Type**| **Description**|
+
+|**Error Type**| **Description** |
 | --- | --- |
 |**Input Errors**|Total number of errors. It includes runts, giants, no buffer, CRC, frame, overrun, and ignored counts.|
 |**Runts**|Frames that are discarded because they are smaller than the minimum frame size for the medium. For instance, any Ethernet frame that is less than 64 bytes is considered a runt.|

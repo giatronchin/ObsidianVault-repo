@@ -7,12 +7,12 @@
 sudo apt update && sudo apt install openssh-server
 
 # On the Control node
-ssh-keygen -t ed25519 -C "$USER"
+ssh-keygen -t ed25519 -C "$USER $HOST"
 ssh-keygen -t ed25519 -C "ansible"
 
 #From the Control node execute first ssh-connection, accepting the worker signature
 
-ssh-copy-id -i user-ublickey.pub worker.ip.address 
+ssh-copy-id -i user-publickey.pub worker.ip.address 
 
 #You may need to specify 'username@worker.ip.address' if default user does not match your current(logged) user on Control node
 

@@ -11,10 +11,42 @@ If these settings must be changed, configure them in port channel interface conf
 
 The port channel can be configured in **access** mode, **trunk** mode (most common), or on a **routed** port.
 
-<mark>Note</mark>: EtherChannel is disabled by default and must be configured.
+<mark>Note</mark>: EtherChannel is **disabled** by default and must be configured.
 <mark>Note</mark>: Cisco version of the protocol is **PAgP**
 
 Configuring EtherChannel with LACP requires the following three steps:
+
+**Step 0**. Every interface that has to be bundled needs to share the same physical configuration (speed, duplex mode, same VLAN configured or be part of a trunk link etc.)
+```
+S1#show interfaces status
+Port Name Status Vlan Duplex Speed Type
+Fa0/1 notconnect 1 auto auto 10/100BaseTX
+Fa0/2 notconnect 1 auto auto 10/100BaseTX
+Fa0/3 notconnect 1 auto auto 10/100BaseTX
+Fa0/4 notconnect 1 auto auto 10/100BaseTX
+Fa0/5 notconnect 1 auto auto 10/100BaseTX
+Fa0/6 notconnect 1 auto auto 10/100BaseTX
+Fa0/7 notconnect 1 auto auto 10/100BaseTX
+Fa0/8 notconnect 1 auto auto 10/100BaseTX
+Fa0/9 notconnect 1 auto auto 10/100BaseTX
+Fa0/10 notconnect 1 auto auto 10/100BaseTX
+Fa0/11 notconnect 1 auto auto 10/100BaseTX
+Fa0/12 notconnect 1 auto auto 10/100BaseTX
+Fa0/13 notconnect 1 auto auto 10/100BaseTX
+Fa0/14 notconnect 1 auto auto 10/100BaseTX
+Fa0/15 notconnect 1 auto auto 10/100BaseTX
+Fa0/16 notconnect 1 auto auto 10/100BaseTX
+Fa0/17 notconnect 1 auto auto 10/100BaseTX
+Fa0/18 notconnect 1 auto auto 10/100BaseTX
+Fa0/19 notconnect 1 auto auto 10/100BaseTX
+Fa0/20 notconnect 1 auto auto 10/100BaseTX
+Fa0/21 connected trunk auto auto 10/100BaseTX
+Fa0/22 connected trunk auto auto 10/100BaseTX
+Fa0/23 notconnect 1 auto auto 10/100BaseTX
+Fa0/24 notconnect 1 auto auto 10/100BaseTX
+Gig0/1 connected 1 auto auto 10/100BaseTX
+Gig0/2 connected 1 auto auto 10/100BaseTX
+```
 
 **Step 1.** Specify the interfaces that compose the EtherChannel group using the **interface range** _interface_ global configuration mode command. The **range** keyword allows you to select several interfaces and configure them all together.
 
