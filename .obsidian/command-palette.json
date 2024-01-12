@@ -1,5 +1,6 @@
 {
   "pinned": [
-    "editor:toggle-blockquote"
+    "editor:toggle-blockquote",
+    "editor:toggle-highlight"
   ]
 }
