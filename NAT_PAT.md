@@ -1,3 +1,5 @@
+# NAT // PAT
+
 **NAT** - Network Address Translation (translate source IPv4 address)
 **PAT** - Port Address Translation (translate bot source IPv4 address + source port number)
 
