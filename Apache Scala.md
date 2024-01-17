@@ -1,5 +1,7 @@
 # Scala
+
 #scala #bigdata
+
 Scala è basato su Java, e proprio come Java è 'statically typed' ma i programmatori devono fornire le informazioni riguardanti il tipo solo in poche occasioni perché Scala può dedurre
 successivamente le informazioni riguardanti il tipo
 
