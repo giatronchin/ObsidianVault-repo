@@ -1,4 +1,4 @@
-#cpt10 #cdp #lldp #ntp #snmp 
+#cpt10 #cdp #lldp #ntp 
 
 ## CDP - Cisco Discovery Protocol (Layer 2)
 CDP is enabled by default. For security reasons, it may be desirable to disable CDP on a network device globally, or per interface. With CDP, an attacker can gather valuable insight about the network layout, such as IP addresses, IOS versions, and types of devices.
@@ -175,6 +175,19 @@ loopfilter state is 'CTRL' (Normal Controlled Loop), drift is 0.000001803 s/s
 system poll interval is 64, last update was 169 sec ago.
 ```
 
---- 
-## SNMP - Simple Network Management Protocol
+---
+## IOS Management
 
+Requirement to upgrade IOS image:
+- Putty & tftp64 server
+ - Console and Ethernet cable
+- Cisco IOS image and Router
+
+1. Connect to the console port on the router
+2. From CLI ping ip address of the computer
+3. Launch tftp64 and bind TFPT server to the address of the PC
+4. Put the .bin image in a folder and make sure the tftp server point at that folder
+5. On the router check flash content `R1# show flash`
+6. `R1# copy tftp flash` - insert the ip address of the PC when prompted to
+7. `R1# config t` and `R1(config)# boot system flash:filename-to-boot.bin`
+8. `R1# reload`
