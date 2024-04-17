@@ -40,6 +40,9 @@ docker exec <container-id> <command>
 To interact with the container shell and being able to quit the container
 ```bash
 docker exec --interactive --tty <container-id> <shell> # 'docker exec -it bash' would have the same results 
+
+# '--interactive' if we need to send key-combination to the container shell
+# '--tty' to make container shell communicate with our current shell
 ```
 
 Check all container run and also stopped
@@ -139,3 +142,10 @@ To run that image use
 docker run our-first-image
 ```
 
+## Docker Utils
+
+```bash
+docker stats #return stats about docker environments
+
+docker inspect #return advance info of a container in a JSON format
+```
