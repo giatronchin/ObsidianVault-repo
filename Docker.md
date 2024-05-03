@@ -128,14 +128,151 @@ USER nobody #change to login to least priviledged user on the container system
 
 ENTRYPOINT [ "/entrypoint.bash" ] #Could also used CMD but there are some differences
 ```
+==Note==: `CMD` and `ENTRYPOINT` are the command launched within the container at the building time.
 
-To build the image, use the following command. The tag will represent the container image name.
+To build the image, use the following command. The tag will represent the container image release. 
 ```bash
 docker build -t our-first-image -f /path/to/fileName #Only if fileName is not Dockerfile
 ```
+
+**LABEL** are not the same thing as they provide your container with metadata to keep them documented and organized.
 
 To run that image use
 ```bash
 docker run our-first-image
 ```
 
+## Docker Compose
+```bash
+docker compose -up
+docker compose build
+docker compose create <service-name>
+docker compose start <service-name>
+
+docker compose stop <service/container-name>
+docker compose rm <service/container-name>
+docker compose down
+```
+
+==**environment variables**== - Accessible inside the running Docker container
+
+==**build-arguments**== - Accessible only at build time
+- Specify *build tool version*
+- Specify *cloud platform configuration* (e.g  AWS region)
+
+To specify these *parameters* use the following syntax:
+```yaml
+#docker-compose.yml
+---
+
+services:
+	storefront:
+		build:
+			context: . #path to where the 'Dockerfile' is located
+			args:
+				- <argument-name> ="<argument-value>"
+		environment:
+			- runtime_env #same env variable defined in the host system
+		volume:
+			- /path/host:/path/container #if host portion is not specified docker will create it
+	database:
+		image: "mysql"
+```
+
+If the list of environment variables gets too long use a file list (env). Change the `docker-compose` as following:
+
+```yaml
+#docker-compose.yml
+---
+
+services:
+	storefront:
+		build:
+			context: . #path to where the 'Dockerfile' is located
+			args:
+				- <argument-name> ="<argument-value>"
+		environment:
+			- runtime_env #same env variable defined in the host system
+		volume:
+			- /path/host:/path/container:rw # 'rw' means read and write permission will be allowed
+	database:
+		image: "mysql"
+		env_file:
+			./path/env_file
+```
+
+```
+#env
+
+MYSQL_ROOT_PASSWORD=mUmySRsF3*ec7NXrFEXWegTH
+MYSQL_DATABASE=ldcsites_wp
+MYSQL_USER=giacomo
+MYSQL_PASSWORD=SuperSecret_ChangeMe
+
+```
+
+Volume can also be declared with a **name** instead of *host path*:
+```yaml
+#docker-compose.yml
+---
+
+services:
+	storefront:
+		build:
+			context: . 
+			args:
+				- <argument-name> ="<argument-value>"
+		environment:
+			- runtime_env 
+		volume:
+			- /path/host:/path/container:rw 
+			- anything:/var/lib/mysql 
+	database:
+		image: "mysql"
+		env_file:
+			./path/env_file
+
+volumes:
+	anything: #named volume
+
+```
+
+Data will be persisted between newly created and older container. At the same time data will be free completly when running `docker compose down --volumes` which will automatically delete the volume.
+
+*Every time we launch a container a new volume will be created*
+
+## Container dependencies
+When a container depend from another to being able to run correctly.
+```yaml
+#docker-compose.yml
+---
+
+services:
+	scheduler:
+		build: scheduler/.
+		ports:
+			- "81:80"
+	storefront:
+		build:
+			context: . 
+			args:
+				- <argument-name> ="<argument-value>"
+		ports:
+			- "80:80"
+			- "443:443"
+		depends_on:
+			- database #compose will start and stop container in dependency order (first the database service and then the storefront)
+		environment:
+			- runtime_env 
+		volume:
+			- /path/host:/path/container:rw 
+			- anything:/var/lib/mysql 
+	database:
+		image: "mysql"
+		env_file:
+			./path/env_file
+
+volumes:
+	anything: #named volume
+
+```
